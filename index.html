@@ -2,7 +2,14 @@
 <html>
 	<head>
 		<title>App</title>
+		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700|Roboto+Mono" rel="stylesheet" defer>
 		<style>
+			:root {
+				font-family: "Roboto", Helvetica, "Times New Roman", sans-serif;
+				
+				--theme-color: #E53935;
+			}
+			
 			body {
 				margin: 0;
 				padding: 0;
@@ -10,12 +17,41 @@
 				height: 100vh;
 			}
 			
-			body > div {
+			.content > div {
 				border-right: 1px solid #CCC;
 			}
 			
 			label {
 				display: block;
+			}
+			
+			.header {
+				position: relative;
+				display: inline-flex;
+				color: var(--theme-color);
+				font-weight: bold;
+				font-size: 1.3em;
+				height: 56px;
+				box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.17);
+			}
+			
+			.header .back {
+				position: absolute;
+				padding: 18px 16px;
+				height: 20px;
+				width: 20px;
+				cursor: pointer;
+			}
+			
+			.header .label {
+				/* Depends on .header having inline-flex display */
+				margin: auto;
+				text-align: center;
+			}
+			
+			.content {
+				flex: 1;
+				display: flex;
 			}
 			
 			.item {
@@ -96,41 +132,45 @@
 			});
 		</script>
 	</head>
-	<body style='display: flex;'>
-		<div>
-			<h1>Connected Devices</h1>
-			<div id='devices'></div>
-		</div>
-		<div>
-			<h1>HTTP Endpoint API</h1>
+	<body style='display: flex; flex-direction: column;'>
+		<div class="header"><div class="back"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.cls-1{fill:var(--theme-color);}</style></defs><polygon class="cls-1" points="82.85 43.93 23.22 43.93 53.03 14.11 44.46 5.54 0 49.99 44.45 94.46 44.46 94.46 53.03 85.88 23.22 56.06 82.85 56.06 100 56.06 100 43.93 82.85 43.93"/></svg></div><div class="label">Page Name</div></div>
+		<div class="content">
 			<div>
-				<label>On/Off</label>
-				<button id='toggle1'>Toggle</button>
+				<h1>Connected Devices</h1>
+				<div id='devices'></div>
 			</div>
 			<div>
-				<label>Temperature</label>
-				<button id='warm1'>Warm</button>
-				<button id='cold1'>Cold</button>
+				<h1>HTTP Endpoint API</h1>
+				<div>
+					<label>On/Off</label>
+					<button id='toggle1'>Toggle</button>
+				</div>
+				<div>
+					<label>Temperature</label>
+					<button id='warm1'>Warm</button>
+					<button id='cold1'>Cold</button>
+				</div>
 			</div>
-		</div>
-		<div>
-			<h1>Socket</h1>
 			<div>
-				<label>On/Off</label>
-				<button id='toggle2'>Toggle</button>
+				<h1>Socket</h1>
+				<div>
+					<label>On/Off</label>
+					<button id='toggle2'>Toggle</button>
+				</div>
+				<div>
+					<label>Temperature</label>
+					<button id='warm2'>Warm</button>
+					<button id='cold2'>Cold</button>
+				</div>
 			</div>
 			<div>
-				<label>Temperature</label>
-				<button id='warm2'>Warm</button>
-				<button id='cold2'>Cold</button>
+				<h1>Non-Functional</h1>
+				<label>Brightness</label>
+				<input id='brightness' type='range'>
+				<label>Color Temp</label>
+				<input type='range'>
 			</div>
 		</div>
-		<div>
-			<h1>Non-Functional</h1>
-			<label>Brightness</label>
-			<input id='brightness' type='range'>
-			<label>Color Temp</label>
-			<input type='range'>
-		</div>
+		<div class="menu"></div>
 	</body>
 </html>
