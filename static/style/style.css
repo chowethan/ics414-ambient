@@ -1,0 +1,100 @@
+@import 'input.css';
+
+:root {
+	font-family: "Roboto", Helvetica, "Times New Roman", sans-serif;
+/*	font-size: 2.6vh;*/
+
+	--theme-color: #E53935;
+	--divider-color: #B3B3B3;
+	--menu-height: 8vh;
+	--menu-item-default-color: #5D5D5D;
+	--menu-item-width: 7.4rem;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+h1 {
+	font-size: 1.4rem;
+}
+
+.content > div {
+	border-right: 1px solid #CCC;
+}
+
+label {
+	display: block;
+}
+
+.header {
+	position: relative;
+	display: inline-flex;
+	color: var(--theme-color);
+	height: 56px;
+	box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.17);
+	user-select: none;
+}
+
+.header .back {
+	position: absolute;
+	padding: 18px 16px;
+	height: 20px;
+	width: 20px;
+	cursor: pointer;
+	transition: opacity 100ms;
+}
+
+.header .back:hover {
+	opacity: 0.56;
+}
+
+.header h1 {
+	/* Depends on .header having inline-flex display */
+	margin: auto;
+	text-align: center;
+	font-size: 1.3em;
+	font-weight: 500;
+}
+
+.content {
+	flex: 1;
+	display: flex;
+}
+
+.menu {
+	display: flex;
+	flex-direction: row;
+	height: var(--menu-height);
+	justify-content: center;
+	align-items: stretch;
+	border-top: 1px solid var(--divider-color);
+	font-size: 0.9em;
+}
+
+.menu > div {
+	--menu-item-color: var(--menu-item-default-color);
+	display: flex;
+	flex-direction: column;
+	width: var(--menu-item-width);
+	padding: 0.3125rem 0.4rem 0 0.4rem;
+	border-bottom: 3px solid rgba(0, 0, 0, 0);
+	color: var(--menu-item-color);
+	cursor: pointer;
+}
+
+.menu > div.active {
+	--menu-item-color: var(--theme-color);
+	border-bottom-color: var(--menu-item-color);
+}
+
+.menu > div .label {
+	margin: auto;
+}
+
+.item {
+	padding: 10px 0;
+}

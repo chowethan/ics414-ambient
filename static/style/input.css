@@ -1,0 +1,241 @@
+input,
+textarea,
+button,
+select {
+	font-family: 'Roboto', Helvetica, 'Times New Roman', sans-serif;
+	border: 1px solid #DADCE0;
+	box-sizing: border-box;
+}
+
+input,
+textarea,
+button,
+select {
+	margin: 0;
+	border-radius: 4px;
+	outline: none;
+	background: #FFF;
+	font-size: 14px;
+	transition: border-color 50ms;
+}
+
+input,
+textarea {
+	padding: 10px;
+}
+
+input[type=file] {
+	padding: 5px;
+}
+
+input[type=file]::-webkit-file-upload-button {
+	font-family: 'Roboto', Helvetica, 'Times New Roman', sans-serif;
+	border: 1px solid #DADCE0;
+	box-sizing: border-box;
+	
+	margin: 0;
+	border-radius: 4px;
+	outline: none;
+	background: #FFF;
+	font-size: 14px;
+	transition: border-color 50ms;
+	
+	padding: 10px;
+	
+	height: 36px;
+	padding: 0 16px;
+	line-height: 36px;
+	transition: border-color 50ms, background 50ms;
+	
+	min-width: 64px;
+	font-weight: bold;
+	text-transform: uppercase;
+	transition: border-color 50ms, background 50ms, box-shadow 250ms;
+	cursor: pointer;
+}
+
+input[type=file]::-webkit-file-upload-button:focus {
+	border-color: #2196F3;
+	opacity: 0.78;
+}
+
+input[type=file]::-webkit-file-upload-button:hover {
+	box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.08), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+
+input[type=image] {
+	/* Fix appearance with padding on Firefox */
+	display: inline-block;
+}
+
+/* Button-like */
+input[type=reset],
+input[type=submit],
+button,
+select {
+	height: 36px;
+	padding: 0 16px;
+	line-height: 36px;
+	transition: border-color 50ms, background 50ms;
+}
+
+select:hover {
+	background: rgba(0, 0, 0, 0.08);
+}
+
+input:focus,
+textarea:focus,
+button:focus,
+select:focus {
+	border-color: #2196F3;
+}
+
+/* Button */
+input[type=reset],
+input[type=submit],
+button {
+	min-width: 64px;
+	margin: 0 5px;
+	font-weight: bold;
+	text-transform: uppercase;
+	transition: border-color 50ms, background 50ms, box-shadow 250ms;
+	cursor: pointer;
+}
+
+input[type=reset]:first-child,
+input[type=submit]:first-child,
+button:first-child {
+	margin-left: 0;
+}
+
+input[type=reset]:last-child,
+input[type=submit]:last-child,
+button:last-child {
+	margin-right: 0;
+}
+
+input[type=reset]:hover,
+input[type=submit]:hover,
+button:hover {
+	box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.08), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+
+input[type=reset]:focus,
+input[type=submit]:focus,
+button:focus {
+	opacity: 0.78;
+}
+
+input[type=reset],
+button[type=reset] {
+	border: 1px solid #F44336;
+	background: #F44336;
+	color: #FFF;
+}
+
+input[type=submit],
+button[type=submit] {
+	border: 1px solid #2196F3;
+	background: #2196F3;
+	color: #FFF;
+}
+
+label {
+	font-weight: 300;
+}
+
+/* Checkbox */
+input[type=checkbox],
+input[type=radio] {
+	position: absolute;
+	opacity: 0;
+}
+
+input[type=checkbox] + .label,
+input[type=radio] + .label {
+	position: relative;
+	padding: 0;
+}
+
+input[type=checkbox] + .label::before,
+input[type=radio] + .label::before {
+	content: '';
+	position: absolute;
+	display: inline-block;
+	top: 50%;
+	left: -32px;
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+	border: 1px solid #DADCE0;
+	background: #FFF;
+	vertical-align: middle;
+	cursor: pointer;
+	transform: translateY(-50%)
+}
+
+input[type=radio] + .label::before {
+	border-radius: 100%;
+}
+
+input[type=checkbox]:hover + .label::before,
+input[type=radio]:hover + .label::before {
+	background: rgba(0, 0, 0, 0.08);
+}
+
+input[type=checkbox]:hover:not(:disabled) + .label::before,
+input[type=radio]:hover:not(:disabled) + .label::before {
+	border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+input[type=checkbox]:focus + .label::before,
+input[type=radio]:focus + .label::before {
+/*	box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);*/
+	box-shadow: 0 0 0 3px #90C9F9;
+}
+
+input[type=checkbox]:checked + .label::before,
+input[type=radio]:checked + .label::before {
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	background: #2196F3;
+}
+
+input[type=checkbox]:disabled + .label,
+input[type=radio]:disabled + .label {
+	color: #B8B8B8;
+	cursor: default;
+}
+
+input[type=checkbox]:disabled + .label::before,
+input[type=radio]:disabled + .label::before {
+	box-shadow: none;
+	background: #DDD;
+	cursor: default;
+}
+
+input[type=checkbox]:checked + .label::after {
+	content: '';
+	display: block;
+	position: absolute;
+	left: -24px;
+	top: 50%;
+	width: 4px;
+	height: 8px;
+	border: solid #FFF;
+	border-width: 0 2px 2px 0;
+	cursor: pointer;
+	transform: translateY(calc(-50% - 1px)) rotate(45deg);
+}
+
+input[type=radio]:checked + .label::after {
+	content: '';
+	display: block;
+	position: absolute;
+	left: -25px;
+	top: 50%;
+	width: 8px;
+	height: 8px;
+	border-radius: 100%;
+	background:#FFF;
+	transform: translateY(-50%)
+}
