@@ -50,6 +50,7 @@
 				let toggle = document.getElementById('toggle');
 				let warm = document.getElementById('warm');
 				let cold = document.getElementById('cold');
+				let temperature = document.getElementById('temperature');
 				
 				// Socket control
 				toggle.addEventListener('click', () => {
@@ -60,6 +61,10 @@
 				});
 				cold.addEventListener('click', () => {
 					socket.emit('temperature', 6500);
+				});
+				temperature.addEventListener('input', () => {
+					console.log(temperature.value);
+					socket.emit('temperature', parseInt(temperature.value, 10));
 				});
 			});
 		</script>
@@ -89,6 +94,9 @@
 					<div>
 						<button id='warm'>Warm</button>
 						<button id='cold'>Cold</button>
+					</div>
+					<div>
+						<input id='temperature' type='range' min='1700' max='6500'>
 					</div>
 				</div>
 			</div>
