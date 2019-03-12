@@ -7,8 +7,11 @@ const socketio = require('socket.io')(server);
 const YeelightAwesome = require('yeelight-awesome');
 const Discover = YeelightAwesome.Discover;
 const Yeelight = YeelightAwesome.Yeelight
+// DeviceQueue is used to help avoid hitting the 60/60 second command quota
+const DeviceQueue = require(`${__dirname}/DeviceQueue.js`);
 const discover = new Discover({port: 1982, debug: true});
 const devices = new Map();
+const deviceQueue = new DeviceQueue();
 
 const Directory = {};
 Directory.SELF = `${__dirname}/`;
@@ -145,7 +148,8 @@ socketio.on('connection', (socket) => {
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
 				try {
-					await yeelight.toggle();
+					await deviceQueue.queue(yeelight, 'toggle');
+//					await yeelight.toggle();
 				} catch (error) {
 					console.log(error);
 				}
@@ -153,11 +157,12 @@ socketio.on('connection', (socket) => {
 		}
 	});
 	
-	socket.on('temperature', (temperature) => {
+	socket.on('temperature', (value) => {
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
 				try {
-					await yeelight.setCtAbx(temperature, 'sudden');
+					await deviceQueue.queue(yeelight, 'setCtAbx', [value, 'smooth', 250]);
+//					await yeelight.setCtAbx(value, 'sudden');
 				} catch (error) {
 					console.log(error);
 				}
@@ -169,7 +174,8 @@ socketio.on('connection', (socket) => {
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
 				try {
-					await yeelight.setBright(value, 'sudden');
+					await deviceQueue.queue(yeelight, 'setBright', [value, 'smooth', 250]);
+//					await yeelight.setBright(value, 'sudden');
 				} catch (error) {
 					console.log(error);
 				}
