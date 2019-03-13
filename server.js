@@ -23,30 +23,24 @@ discover.on('deviceAdded', (device) => {
 	console.log(device);
 	const yeelight = new Yeelight({lightIp: device.host, lightPort: device.port});
 
+	yeelight.on('error', (error) => {
+		console.log('Yeelight error', error);
+	});
+	yeelight.on('connected', () => {
+		console.log('Connected');
+		socketio.emit('device-connect', device);
+
+		devices.set(device.id, {device: yeelight, info: device});
+	});
+	yeelight.on('disconnected', () => {
+		console.log('Disconnected');
+		socketio.emit('device-disconnect', device.id);
+
+		devices.delete(device.id);
+	});
+	
 	yeelight.connect().then((yeelight) => {
 		yeelight.autoReconnect = true;
-		devices.set(device.id, {device: yeelight, info: device});
-		socketio.emit('device-connect', device);
-		
-		yeelight.on('error', (error) => {
-			async function retry() {
-				await yeelight.connect().then(() => {
-					resolve();
-				}).catch(() => {
-					setTimeout(() => {
-						resolve();
-						retry();
-					}, 5000);
-				});
-			}
-			
-			retry();
-		});
-		yeelight.on('disconnected', () => {
-			socketio.emit('device-disconnect', device.id);
-			
-			devices.delete(device.id);
-		});
 	});
 });
 discover.start();
