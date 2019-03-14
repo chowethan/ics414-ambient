@@ -1,5 +1,6 @@
 const fs = require('fs');
 const application = require('express')();
+ const cron = require("node-cron");
 const http = require('http');
 const server = http.createServer(application);
 const socketio = require('socket.io')(server);
@@ -176,6 +177,12 @@ socketio.on('connection', (socket) => {
 			})();
 		}
 	});
+    
+    cron.schedule("*/30 * * * * *", function() {
+      console.log("yay");
+      socket.emit('toggle');
+    });
+    
 });
 
 server.listen(listenPort, listenAddress, () => {
@@ -200,3 +207,4 @@ process.on('SIGINT', async () => {
 	
 	process.exit(0);
 });
+
