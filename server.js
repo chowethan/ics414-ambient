@@ -24,6 +24,10 @@ discover.on('deviceAdded', (device) => {
 	const yeelight = new Yeelight({lightIp: device.host, lightPort: device.port});
 
 	yeelight.on('error', (error) => {
+		if (error.code == 'EHOSTUNREACH') {
+			return;
+		}
+		
 		console.log('Yeelight error', error);
 	});
 	yeelight.on('connected', () => {
@@ -127,7 +131,6 @@ application.use(async (mainError, request, response, next) => {
 	// Send a plain text error
 	response.setHeader('Content-Type', 'text/plain');
 	response.send('');
-//	response.send(`${errorType.code} ${errorType.name}`);
 });
 
 socketio.on('connection', (socket) => {
