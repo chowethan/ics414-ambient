@@ -6,6 +6,7 @@
 		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
 		<link href='/style/style.css' rel='stylesheet' defer>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js' integrity='sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=' crossorigin='anonymous'></script>
+        <script src="check_weather.js"></script>
 		<script>
 			document.addEventListener('DOMContentLoaded', () => {
 				const socket = io();
@@ -52,6 +53,7 @@
 				let warm = document.getElementById('warm');
 				let cold = document.getElementById('cold');
 				let temperature = document.getElementById('temperature');
+                let weather = document.getElementById('weather');
 				
 				// Socket control
 				toggle.addEventListener('click', () => {
@@ -67,6 +69,9 @@
 					console.log(temperature.value);
 					socket.emit('temperature', parseInt(temperature.value, 10));
 				});
+                weather.addEventListener('click', () => {
+                    check_weather();
+                });
 			});
 		</script>
 	</head>
@@ -95,6 +100,7 @@
 					<div>
 						<button id='warm'>Warm</button>
 						<button id='cold'>Cold</button>
+                        <button id="weather">Weather</button>
 					</div>
 					<div>
 						<input id='temperature' type='range' min='1700' max='6500'>
