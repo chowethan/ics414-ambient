@@ -178,10 +178,31 @@ socketio.on('connection', (socket) => {
 		}
 	});
     
-    cron.schedule("*/30 * * * * *", function() {
-      console.log("yay");
-      socket.emit('toggle');
-    });
+	socket.on('set_event', (value) => {
+        let day = value["day"];
+        let hour = value["hour"];
+        let minute = value["minute"];
+        let cron_string = minute + " " + hour + " * * " + day;
+        console.log("task set for" + cron_string + "(min hr dayofmonth month dayofweek)");
+        cron.schedule(cron_string, function() {
+            console.log("job done!");
+            
+          for (let [, {device: yeelight}] of devices) {
+                (async () => {
+                    try {
+                        await yeelight.setBright(value, 'sudden');
+                        
+                    } catch (error) {
+                        console.log(error);
+                    }
+                })();
+            }      
+        console.log("task originally set for" + cron_string + "(min hr dayofmonth month dayofweek)");
+        var d = new Date();
+        console.log("current time is day: " + d.getDay() + " hour: " + d.getHours() + " minutes: " + d.getMinutes());
+        });
+	});
+
     
 });
 

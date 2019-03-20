@@ -53,8 +53,25 @@
 				let warm = document.getElementById('warm');
 				let cold = document.getElementById('cold');
 				let temperature = document.getElementById('temperature');
-                let weather = document.getElementById('weather');
-				
+        //cron job stuff        
+                let day = document.getElementById("day");
+                let hour = document.getElementById("hour");
+                let minute = document.getElementById("minute");
+                
+				let set_alert = document.getElementById("set_alert");
+            
+                set_alert.addEventListener('click', () => {
+                    if(checkAlert(day.value, hour.value, minute.value)){
+                       console.log("alert set");
+					   socket.emit('set_event', {day: day.value, 
+                                                 hour: hour.value, 
+                                                 minute: minute.value});
+                    }else{
+                        console.log("incorrect alert values");
+                    }
+				});
+         //end of cron job stuff
+                
 				// Socket control
 				toggle.addEventListener('click', () => {
 					socket.emit('toggle');
@@ -69,10 +86,21 @@
 					console.log(temperature.value);
 					socket.emit('temperature', parseInt(temperature.value, 10));
 				});
-                weather.addEventListener('click', () => {
-                    check_weather();
-                });
+
 			});
+            
+            function checkAlert(day, hour, minute){
+                    if(day == undefined){
+                        return false;   
+                    }
+                    if(hour<0 || hour>23){                    
+                        return false;
+                    }
+                    if(minute < 0 || minute > 59){
+                        return false;
+                    }
+                    return true;
+                }
 		</script>
 	</head>
 	<body style='display: flex; flex-direction: column;'>
@@ -100,12 +128,46 @@
 					<div>
 						<button id='warm'>Warm</button>
 						<button id='cold'>Cold</button>
-                        <button id="weather">Weather</button>
 					</div>
 					<div>
 						<input id='temperature' type='range' min='1700' max='6500'>
 					</div>
 				</div>
+			</div>
+            <div>
+				<h1>Add Event</h1>
+				<div>
+					<label>Day of week</label>
+					<div>
+                        <select id="day">
+                          <option value=1>monday</option>
+                          <option value=2>tuesday</option>
+                          <option value=3>wednesday</option>
+                          <option value=4>thursday</option>
+                          <option value=5>friday</option>
+                          <option value=6>saturday</option>
+                          <option value=0>sunday</option>
+                        </select>
+					</div>
+				</div>
+				<div>
+					<label>Hour</label>
+					<div>
+						<input type="number" id="hour" placeholder="hour 0-23">
+					</div>
+				</div>
+				<div>
+					<label>Minute</label>
+					<div>
+						<input type="number" id="minute" placeholder="minute 0-59">
+					</div>
+				</div> 
+  				<div>
+					<label>Set Alert</label>
+					<div>
+						<button id="set_alert">Set Alert</button>
+					</div>
+				</div>                   
 			</div>
 		</div>
 		<div class='menu'>
