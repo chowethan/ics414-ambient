@@ -187,11 +187,11 @@ socketio.on('connection', (socket) => {
         cron.schedule(cron_string, function() {
             console.log("job done!");
             
-          for (let [, {device: yeelight}] of devices) {
+            for (let [, {device: yeelight}] of devices) {
                 (async () => {
                     try {
-                        await yeelight.setBright(value, 'sudden');
-                        
+                        await deviceQueue.queue(yeelight, 'toggle');
+
                     } catch (error) {
                         console.log(error);
                     }
