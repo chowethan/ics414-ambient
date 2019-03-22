@@ -118,6 +118,7 @@ socketio.on('connection', (socket) => {
 
 	});
     
+    //if there are existing cron jobs saved, load them on start
     read_in_existing_alerts();
     
 });
