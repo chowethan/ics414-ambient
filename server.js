@@ -19,11 +19,13 @@ Directory.STATIC = `${Directory.SELF}static/`;
 const listenPort = process.env.PORT || 8080;
 const listenAddress = '0.0.0.0';
 
-discover.on('deviceAdded', (device) => {
-	console.log(device);
-	const yeelight = new Yeelight({lightIp: device.host, lightPort: device.port});
 // Attempt to serve any file
 require(`${Directory.SELF}StaticFileServer.js`)(application, Directory);
+
+discover.on('deviceAdded', (deviceInfo) => {
+	console.log(deviceInfo);
+	const yeelight = new Yeelight({lightIp: deviceInfo.host, lightPort: deviceInfo.port});
+	let deviceID;
 
 	yeelight.on('error', (error) => {
 		if (error.code == 'EHOSTUNREACH') {
@@ -33,16 +35,18 @@ require(`${Directory.SELF}StaticFileServer.js`)(application, Directory);
 		console.log('Yeelight error', error);
 	});
 	yeelight.on('connected', () => {
-		console.log('Connected');
-		socketio.emit('device-connect', device);
-
-		devices.set(device.id, {device: yeelight, info: device});
+		deviceID = devices.size;
+		
+		console.log(`Device connected with ID ${deviceID}`);
+		let clientDeviceInfo = {id: deviceID, model: deviceInfo.model};
+		socketio.emit('device-connect', clientDeviceInfo);
+		devices.set(deviceID, {device: yeelight, info: clientDeviceInfo});
 	});
 	yeelight.on('disconnected', () => {
-		console.log('Disconnected');
-		socketio.emit('device-disconnect', device.id);
+		console.log(`Device disconnected with ID ${deviceID}`);
+		socketio.emit('device-disconnect', deviceID);
 
-		devices.delete(device.id);
+		devices.delete(deviceID);
 	});
 	
 	yeelight.connect().then((yeelight) => {
