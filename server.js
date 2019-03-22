@@ -5,6 +5,7 @@ const server = http.createServer(application);
 const socketio = require('socket.io')(server);
 
 const YeelightAwesome = require('yeelight-awesome');
+require(`${__dirname}/YeelightAwesomeExtension.js`)(YeelightAwesome);
 const Discover = YeelightAwesome.Discover;
 const Yeelight = YeelightAwesome.Yeelight
 // DeviceQueue is used to help avoid hitting the 60/60 second command quota
