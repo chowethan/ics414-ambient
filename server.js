@@ -1,4 +1,5 @@
 const fs = require('fs');
+var lineReader = require('line-reader');
 const application = require('express')();
  const cron = require("node-cron");
 const http = require('http');
@@ -184,25 +185,18 @@ socketio.on('connection', (socket) => {
         let minute = value["minute"];
         let cron_string = minute + " " + hour + " * * " + day;
         console.log("task set for" + cron_string + "(min hr dayofmonth month dayofweek)");
-        cron.schedule(cron_string, function() {
-            console.log("job done!");
-            
-            for (let [, {device: yeelight}] of devices) {
-                (async () => {
-                    try {
-                        await deviceQueue.queue(yeelight, 'toggle');
-
-                    } catch (error) {
-                        console.log(error);
-                    }
-                })();
-            }      
-        console.log("task originally set for" + cron_string + "(min hr dayofmonth month dayofweek)");
-        var d = new Date();
-        console.log("current time is day: " + d.getDay() + " hour: " + d.getHours() + " minutes: " + d.getMinutes());
+        
+        create_alert(cron_string);
+        
+        fs.appendFile("static/alerts/alerts.txt", cron_string + "\n", function(err){
+            if(err) throw err;
+            console.log("file written");
         });
-	});
+        
 
+	});
+    
+    read_in_existing_alerts();
     
 });
 
@@ -229,3 +223,36 @@ process.on('SIGINT', async () => {
 	process.exit(0);
 });
 
+//cron alert functions
+function create_alert(cron_string){
+    cron.schedule(cron_string, function() {
+        
+        console.log("job done!");
+        for (let [, {device: yeelight}] of devices) {
+            (async () => {
+                try {
+                    await deviceQueue.queue(yeelight, 'toggle');
+
+                } catch (error) {
+                    console.log(error);
+                }
+            })();
+        }      
+        console.log("task originally set for" + cron_string + "(min hr dayofmonth month dayofweek)");
+        var d = new Date();
+        console.log("current time is day: " + d.getDay() + " hour: " + d.getHours() + " minutes: " + d.getMinutes());
+    });
+}
+
+function read_in_existing_alerts(){
+    if(fs.existsSync('static/alerts/alerts.txt')){
+        lineReader.eachLine('static/alerts/alerts.txt', function(line, last) {
+          create_alert(line);
+          console.log("added alert from alert file for: ", line);
+          if(last){
+            console.log("finished reading in existing alerts");
+          }
+        });
+        
+    }
+}
