@@ -45,6 +45,9 @@ discover.on('deviceAdded', (deviceInfo) => {
 		socketio.emit('device-connect', clientDeviceInfo);
 		devices.set(deviceID, {device: yeelight, info: clientDeviceInfo});
 	});
+	yeelight.on('changed', (parameters) => {
+		socketio.emit('device-state', parameters);
+	});
 	yeelight.on('disconnected', () => {
 		console.log(`Device disconnected with ID ${deviceID}`);
 		socketio.emit('device-disconnect', deviceID);
