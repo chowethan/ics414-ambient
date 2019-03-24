@@ -5,51 +5,121 @@
 		<title>App</title>
 		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
 		<link href='/style/style.css' rel='stylesheet' defer>
-        <script src="check_weather.js"></script>
-        <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let set_alert = document.getElementById("set_alert");
-            function checkAlert(){
-                let day = document.getElementById("day").value;
-                let hour = document.getElementById("hour").value;
-                let minute = document.getElementById("minute").value;
-                if(day == undefined){
-                    return false;   
-                }
-                if(hour<0 || hour>23){
-                    return false;
-                }
-                if(minute < 0 || minute > 59){
-                    return false;
-                }
-            }
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js' integrity='sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=' crossorigin='anonymous'></script>
+		<script type="module">
+			import ListItem from '/script/component/ListItem.js';
+			
+			document.addEventListener('DOMContentLoaded', () => {
+				const socket = io();
+                
+                socket.on('alert_scheduled', (cron_string) => {
+                    console.log(cron_string);
+                    addEventItem(cron_string);        
+                });
             
+                function addEventItem(cron_string){
+                    let numberPattern = /\d+/g;   
+                    let alert_time = cron_string.match(numberPattern);
+                    console.log(alert_time);
+                    
+                    //array holds alert by minute, hour, day
+                    let event_string = dayOf(alert_time[2]) + ", ";
+                    event_string += alert_time[1] + ":" + alert_time[0];
+                    
+                    let events = document.getElementById('events');
+                    let item = new ListItem();
+                    item.dataset.id = 1;
+                    item.setAttribute('text', event_string);
+                    //item.setAttribute('detail', 'Connected');
+                    events.appendChild(item);
+                }
+    
+                socket.on('displayAlerts', (yeelightEvents) => {
+                    console.log(yeelightEvents.length);
+                    for(let alert of yeelightEvents){
+                        console.log(alert);
+                        addEventItem(alert);
+                    }
+                });
+				
+                let day = document.getElementById("day");
+                let hour = document.getElementById("hour");
+                let minute = document.getElementById("minute");
+                
+				let set_alert = document.getElementById("set_alert");
             
-            set_alert.addEventListener('click', () => {
-                    if(set_alert){
-					   socket.emit('set_event', {day: day, 
-                                                 hour: hour, 
-                                                 minute: minute});
+                set_alert.addEventListener('click', () => {
+                    if(checkAlert(day.value, hour.value, minute.value)){
+                       console.log("alert set");
+					   socket.emit('set_event', {day: day.value, 
+                                                 hour: hour.value, 
+                                                 minute: minute.value});
+                    }else{
+                        console.log("incorrect alert values");
                     }
 				});
-            
-        });
+         //end of cron job stuff
+                
 
-        </script>
+			});
+            
+            function checkAlert(day, hour, minute){
+                    if(day == undefined){
+                        return false;   
+                    }
+                    if(hour<0 || hour>23){                    
+                        return false;
+                    }
+                    if(minute < 0 || minute > 59){
+                        return false;
+                    }
+                    return true;
+            }
+            
+            function dayOf(int_day){
+                let day="";
+                switch (parseInt(int_day)) {
+                  case 0:
+                    day = "Sunday";
+                    break;
+                  case 1:
+                    day = "Monday";
+                    break;
+                  case 2:
+                     day = "Tuesday";
+                    break;
+                  case 3:
+                    day = "Wednesday";
+                    break;
+                  case 4:
+                    day = "Thursday";
+                    break;
+                  case 5:
+                    day = "Friday";
+                    break;
+                  case 6:
+                    day = "Saturday";
+                }
+                return day;
+            }
+            
+		</script>
 	</head>
 	<body style='display: flex; flex-direction: column;'>
 		<div class='header'>
 			<div class='back'>
-				<a href="index.html"><svg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.cls-1{fill:var(--theme-color);}</style></defs><polygon class='cls-1' points='82.85 43.93 23.22 43.93 53.03 14.11 44.46 5.54 0 49.99 44.45 94.46 44.46 94.46 53.03 85.88 23.22 56.06 82.85 56.06 100 56.06 100 43.93 82.85 43.93'/></svg></a>
+                <a href="index.html"><svg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.cls-1{fill:var(--theme-color);}</style></defs><polygon class='cls-1' points='82.85 43.93 23.22 43.93 53.03 14.11 44.46 5.54 0 49.99 44.45 94.46 44.46 94.46 53.03 85.88 23.22 56.06 82.85 56.06 100 56.06 100 43.93 82.85 43.93'/></svg></a>
 			</div>
-			<h1>Home</h1>
+			<h1><a href="index.html">Home</a></h1>
 		</div>
 		<div class='content'>
 			<div>
-				<h1>Border Space</h1>
-			
+				<h1>Events</h1>
+				<ambient-list id='events'></ambient-list>
+<!--				<div id='devices'><ambient-item text='Device' detail='Yeelight White Tunable'></ambient-item></div>-->
 			</div>
-			<div>
+
+            <div>
 				<h1>Add Event</h1>
 				<div>
 					<label>Day of week</label>
@@ -68,13 +138,13 @@
 				<div>
 					<label>Hour</label>
 					<div>
-						<input type="number" id="hour" placeholder="hour in 24hr time">
+						<input type="number" id="hour" placeholder="hour 0-23">
 					</div>
 				</div>
 				<div>
 					<label>Minute</label>
 					<div>
-						<input type="number" id="minute" placeholder="minute">
+						<input type="number" id="minute" placeholder="minute 0-59">
 					</div>
 				</div> 
   				<div>
@@ -82,13 +152,12 @@
 					<div>
 						<button id="set_alert">Set Alert</button>
 					</div>
-				</div>               
-                
+				</div>                   
 			</div>
 		</div>
 		<div class='menu'>
-			<div class='active'><div class='label'>Home</div></div>
-            <div><span class='label'><a href="event.html"><span class='label'>Devices</span></a></span></div>
+            <div><span class='label'><a href="index.html"><span class='label'>Home</span></a></span></div>
+			<div class='active'><div class='label'>Events</div></div>
 			<div><span class='label'>Devices</span></div>
 		</div>
 	</body>

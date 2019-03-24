@@ -21,7 +21,7 @@ Directory.SELF = `${__dirname}/`;
 Directory.STATIC = `${Directory.SELF}static/`;
 const listenPort = process.env.PORT || 8080;
 const listenAddress = '0.0.0.0';
-
+let yeelightEvents = [];
 // Attempt to serve any file
 require(`${Directory.SELF}StaticFileServer.js`)(application, Directory);
 
@@ -116,6 +116,7 @@ socketio.on('connection', (socket) => {
         console.log("task set for" + cron_string + "(min hr dayofmonth month dayofweek)");
         
         create_alert(cron_string);
+        socket.emit('alert_scheduled', cron_string);
         
         fs.appendFile("static/alerts/alerts.txt", cron_string + "\n", function(err){
             if(err) throw err;
@@ -127,6 +128,7 @@ socketio.on('connection', (socket) => {
     
     //if there are existing cron jobs saved, load them on start
     read_in_existing_alerts();
+    socket.emit("displayAlerts", yeelightEvents);
     
 });
 
@@ -155,8 +157,8 @@ process.on('SIGINT', async () => {
 
 //cron alert functions
 function create_alert(cron_string){
-    cron.schedule(cron_string, function() {
-        
+    console.log("added alert for: ", cron_string);
+    cron.schedule(cron_string, function() {      
         console.log("job done!");
         for (let [, {device: yeelight}] of devices) {
             (async () => {
@@ -167,22 +169,30 @@ function create_alert(cron_string){
                     console.log(error);
                 }
             })();
-        }      
+        }
         console.log("task originally set for" + cron_string + "(min hr dayofmonth month dayofweek)");
         var d = new Date();
         console.log("current time is day: " + d.getDay() + " hour: " + d.getHours() + " minutes: " + d.getMinutes());
     });
 }
 
-function read_in_existing_alerts(){
+function read_in_existing_alerts(){ 
+    var count = 0;
     if(fs.existsSync('static/alerts/alerts.txt')){
         lineReader.eachLine('static/alerts/alerts.txt', function(line, last) {
-          create_alert(line);
-          console.log("added alert from alert file for: ", line);
-          if(last){
-            console.log("finished reading in existing alerts");
-          }
+            if(count < 1){
+                yeelightEvents = [];
+            }
+            create_alert(line);
+            yeelightEvents.push(line);
+            count++;
+             //console.log("count is: " + count);
+            
+            if(last){
+                console.log("finished reading in existing alerts");
+                
+            }
         });
-        
     }
+
 }
