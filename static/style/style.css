@@ -100,7 +100,17 @@ a {
 	margin: auto;
 	text-decoration: none;
 	color: inherit;
+}
 
+.popup-form {
+	display: none;
+	top: 0;
+	z-index: 1;
+	background-color: rgb(0,0,0,0.4);
+}
+
+.popup-element{
+	padding-bottom: 10px;
 }
 
 .item {

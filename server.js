@@ -109,7 +109,7 @@ socketio.on('connection', (socket) => {
 	socket.on('schedule', (date) => {
 		schedule.scheduleJob(date, function() {
 			console.log("here");
-			socket.emit('toggle');
+			socket.emit('temperature', 6500);
 		})
 	});
 });

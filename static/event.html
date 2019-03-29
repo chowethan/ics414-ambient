@@ -53,6 +53,11 @@
 				let cold = document.getElementById('cold');
 				let temperature = document.getElementById('temperature');
 				let submitDateTime = document.getElementById('submitDateTime');
+				let eventAdd = document.getElementById('add-event');
+
+				eventAdd.addEventListener('click', () => {
+					document.getElementById('popup-form').style.display = "block";
+				});
 
 				//Form submission
 				submitDateTime.addEventListener('click', () => {
@@ -63,7 +68,7 @@
 					let dateTime = new Date(date[0], date[1] - 1, date[2], time[0], time[1]);
 					console.log("here");
 					socket.emit('schedule', dateTime);
-				})
+				});
 
 				// Socket control
 				toggle.addEventListener('click', () => {
@@ -115,15 +120,21 @@
 			</div>
       <div>
         <h1>Events</h1>
-				<label for="date-time">Date & Time</label>
-				<div style="display: inline-block">
-					<input id="date-input" type='date' name='date-of-event'>
-				</div>
-				<div style="display: inline-block">
-					<input id="time-input" type='time' name='time-of-event' value='00:00'>
-				</div>
-				<div style='display: inline-block'>
-					<button id='submitDateTime'>Submit</button>
+				<div>
+					<button id="add-event">Add Event</button>
+			  </div>
+				<div class='popup-form' id='popup-form'>
+					<label for="date-time">Date</label>
+					<div class="popup-element">
+						<input id="date-input" type='date' name='date-of-event'>
+					</div>
+					<label for="time">Time</label>
+					<div class="popup-element">
+						<input id="time-input" type='time' name='time-of-event' value='00:00'>
+					</div>
+					<div>
+						<button id='submitDateTime'>Submit</button>
+					</div>
 				</div>
       </div>
 		</div>
