@@ -3,6 +3,7 @@ const application = require('express')();
 const http = require('http');
 const server = http.createServer(application);
 const socketio = require('socket.io')(server);
+const schedule = require('node-schedule');
 
 const YeelightAwesome = require('yeelight-awesome');
 const Discover = YeelightAwesome.Discover;
@@ -27,7 +28,7 @@ discover.on('deviceAdded', (device) => {
 		if (error.code == 'EHOSTUNREACH') {
 			return;
 		}
-		
+
 		console.log('Yeelight error', error);
 	});
 	yeelight.on('connected', () => {
@@ -42,7 +43,7 @@ discover.on('deviceAdded', (device) => {
 
 		devices.delete(device.id);
 	});
-	
+
 	yeelight.connect().then((yeelight) => {
 		yeelight.autoReconnect = true;
 	});
@@ -54,12 +55,12 @@ application.use(async (request, response, next) => {
 	let path = request.path;
 	// Removes the leading slash
 	let internalPath = Directory.STATIC + path.substring('/'.length);
-	
+
 	if (path.charAt(path.length - 1) == '/') {
 		// Try to route to an index if the request is for a directory
 		internalPath += 'index';
 	}
-	
+
 	// Look for a file with the same path but with the .html extension appended
 	// This allows /test to point to /test.html
 	fs.access(internalPath + '.html', fs.constants.R_OK, (error) => {
@@ -72,12 +73,12 @@ application.use(async (request, response, next) => {
 
 					// Trigger the error handler chain
 					next(httpError);
-					
+
 					return;
 				}
-				
+
 				let redirect = undefined;
-				
+
 				// Redirect any relative /index.html to just the relative /
 				// Redirect any .html file to the URL without the extension
 				if (path.substring(path.length - '/index.html'.length) == '/index.html') {
@@ -85,7 +86,7 @@ application.use(async (request, response, next) => {
 				} else if (path.substring(path.length - '.html'.length) == '.html') {
 					redirect = path.substring(0, path.length - '.html'.length);
 				}
-					
+
 				if (redirect !== undefined) {
 					// Send a 301 Moved Permanently
 					response.statusCode = 301;
@@ -98,17 +99,17 @@ application.use(async (request, response, next) => {
 					response.sendFile(internalPath);
 				}
 			});
-			
+
 			return;
 		}
-		
+
 		let redirect = undefined;
-		
+
 		// Redirect any relative /index to just the relative /
 		if (path.substring(path.length - '/index'.length) == '/index') {
 			redirect = path.substring(0, path.length - 'index'.length);
 		}
-		
+
 		if (redirect !== undefined) {
 			// Send a 301 Moved Permanently
 			response.statusCode = 301;
@@ -127,7 +128,7 @@ application.use(async (request, response, next) => {
 application.use(async (mainError, request, response, next) => {
 	// Return the correct status code header
 	response.statusCode = mainError.status
-	
+
 	// Send a plain text error
 	response.setHeader('Content-Type', 'text/plain');
 	response.send('');
@@ -138,9 +139,9 @@ socketio.on('connection', (socket) => {
 	for (let [, {info}] of devices) {
 		deviceInfo.push(info);
 	}
-	
+
 	socket.emit('devices', deviceInfo);
-	
+
 	socket.on('toggle', () => {
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
@@ -153,7 +154,7 @@ socketio.on('connection', (socket) => {
 			})();
 		}
 	});
-	
+
 	socket.on('temperature', (value) => {
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
@@ -166,7 +167,7 @@ socketio.on('connection', (socket) => {
 			})();
 		}
 	});
-	
+
 	socket.on('brightness', (value) => {
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
@@ -178,6 +179,13 @@ socketio.on('connection', (socket) => {
 				}
 			})();
 		}
+	});
+
+	socket.on('schedule', (date) => {
+		schedule.scheduleJob(date, function() {
+			console.log("here");
+			socket.emit('toggle');
+		})
 	});
 });
 
@@ -198,8 +206,8 @@ process.on('SIGINT', async () => {
 			console.log(error);
 		}
 	}
-	
+
 	discover.destroy();
-	
+
 	process.exit(0);
 });

@@ -95,6 +95,14 @@ label {
 	margin: auto;
 }
 
+a {
+	display: block;
+	margin: auto;
+	text-decoration: none;
+	color: inherit;
+
+}
+
 .item {
 	padding: 10px 0;
 }
