@@ -2,6 +2,7 @@ const application = require('express')();
 const http = require('http');
 const server = http.createServer(application);
 const socketio = require('socket.io')(server);
+const schedule = require('node-schedule');
 
 const YeelightAwesome = require('yeelight-awesome');
 require(`${__dirname}/YeelightAwesomeExtension.js`)(YeelightAwesome);
@@ -31,12 +32,12 @@ discover.on('deviceAdded', (deviceInfo) => {
 		if (error.code == 'EHOSTUNREACH') {
 			return;
 		}
-		
+
 		console.log('Yeelight error', error);
 	});
 	yeelight.on('connected', () => {
 		deviceID = devices.size;
-		
+
 		console.log(`Device connected with ID ${deviceID}`);
 		let clientDeviceInfo = {id: deviceID, model: deviceInfo.model};
 		socketio.emit('device-connect', clientDeviceInfo);
@@ -51,7 +52,7 @@ discover.on('deviceAdded', (deviceInfo) => {
 
 		devices.delete(deviceID);
 	});
-	
+
 	yeelight.connect().then((yeelight) => {
 		yeelight.autoReconnect = true;
 	});
@@ -63,9 +64,9 @@ socketio.on('connection', (socket) => {
 	for (let [, {info}] of devices) {
 		deviceInfo.push(info);
 	}
-	
+
 	socket.emit('devices', deviceInfo);
-	
+
 	socket.on('toggle', () => {
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
@@ -78,7 +79,7 @@ socketio.on('connection', (socket) => {
 			})();
 		}
 	});
-	
+
 	socket.on('temperature', (value) => {
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
@@ -91,7 +92,7 @@ socketio.on('connection', (socket) => {
 			})();
 		}
 	});
-	
+
 	socket.on('brightness', (value) => {
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
@@ -103,6 +104,13 @@ socketio.on('connection', (socket) => {
 				}
 			})();
 		}
+	});
+
+	socket.on('schedule', (date) => {
+		schedule.scheduleJob(date, function() {
+			console.log("here");
+			socket.emit('toggle');
+		})
 	});
 });
 
@@ -123,8 +131,8 @@ process.on('SIGINT', async () => {
 			console.log(error);
 		}
 	}
-	
+
 	discover.destroy();
-	
+
 	process.exit(0);
 });

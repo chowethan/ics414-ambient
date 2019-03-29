@@ -8,16 +8,16 @@
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js' integrity='sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=' crossorigin='anonymous'></script>
 		<script type="module">
 			import ListItem from '/script/component/ListItem.js';
-			
+
 			document.addEventListener('DOMContentLoaded', () => {
 				const socket = io();
 				let selectedDevice;
-				
+
 				function selectDevice(event, id) {
 					selectedDevice = id;
 					event.target.setAttribute('selected');
 				}
-				
+
 				function getModelName(model) {
 					switch (model) {
 						case 'ct_bulb':
@@ -26,38 +26,38 @@
 							return 'Unknown Model';
 					}
 				}
-				
+
 				function addDevice(device) {
 					let deviceList = document.getElementById('devices');
-					
+
 					let item = new ListItem();
 					item.dataset.id = device.id;
 					item.setAttribute('text', getModelName(device.model));
 					item.setAttribute('detail', 'Connected');
 					deviceList.appendChild(item);
 				}
-				
+
 				socket.on('devices', (devices) => {
 					console.log(devices);
 					for (let device of devices) {
 						addDevice(device);
 					}
 				});
-				
+
 				socket.on('device-connect', (device) => {
 						addDevice(device);
 				});
-				
+
 				socket.on('device-disconnect', (device) => {
 					let deviceList = document.getElementById('devices');
-					
+
 					for (let i = 0; i < deviceList.children.length; i++) {
 						if (deviceList.children[i].dataset.id == device.id) {
 							deviceList.children[i].setAttribute('detail', 'Disconnected');
 						}
 					}
 				});
-				
+
 				function get(url) {
 					return new Promise((resolve, reject) => {
 						let request = new XMLHttpRequest();
@@ -78,12 +78,12 @@
 						request.send(null);
 					});
 				}
-				
+
 				let toggle = document.getElementById('toggle');
 				let warm = document.getElementById('warm');
 				let cold = document.getElementById('cold');
 				let temperature = document.getElementById('temperature');
-				
+
 				// Socket control
 				toggle.addEventListener('click', () => {
 					socket.emit('toggle');
@@ -136,7 +136,7 @@
 		</div>
 		<div class='menu'>
 			<div class='active'><div class='label'>Home</div></div>
-			<div><span class='label'>Events</span></div>
+			<div onclick="window.location='event.html';"><a href="event.html"><span class='label'>Events</span></a></div>
 			<div><span class='label'>Devices</span></div>
 		</div>
 	</body>
