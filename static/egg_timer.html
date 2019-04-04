@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="style/eggTimer.css">
   
 </head>
 <body>
@@ -40,12 +41,19 @@
         </div>
       </div>
     </div>
-    
-    
-    <button type="button" class="btn btn-primary">Start Timer</button>
-    <button type="button" class="btn btn-primary">Reset Timer</button>
-</div>
+     
+    <button type="button" class="btn btn-primary" onClick="stopwatch.start();">Start Timer</button>
+    <button type="button" class="btn btn-primary" onClick="stopwatch.stop()">Stop Timer</button>
+    <button type="button" class="btn btn-primary" onClick="stopwatch.restart()">Reset Timer</button>
+    <br><br>
 
+	<div class="card" ">
+		<h4 class="card-header text-center">Time</h4>
+	 	<div class="stopwatch"></div>
+	</div>
+
+</div>
+<script src="script/stopWatch.js"></script>
 
 </body>
 </html>
