@@ -1,8 +1,7 @@
 class Stopwatch {
-    constructor(display, results) {
+    constructor(display) {
         this.running = false;
         this.display = display;
-        this.results = results;
         this.laps = [];
         this.reset();
         this.print(this.times);
@@ -20,13 +19,6 @@ class Stopwatch {
         }
     }
     
-    lap() {
-        let times = this.times;
-        let li = document.createElement('li');
-        li.innerText = this.format(times);
-        this.results.appendChild(li);
-    }
-    
     stop() {
         this.running = false;
         this.time = null;
@@ -42,10 +34,7 @@ class Stopwatch {
         this.stop();
         this.print();
     }
-    
-    clear() {
-        clearChildren(this.results);
-    }
+
     
     step(timestamp) {
         if (!this.running) return;
@@ -90,11 +79,7 @@ function pad0(value, count) {
     return result;
 }
 
-function clearChildren(node) {
-    while (node.lastChild)
-        node.removeChild(node.lastChild);
-}
 
 let stopwatch = new Stopwatch(
-    document.querySelector('.stopwatch'),
-    document.querySelector('.results'));
+    document.querySelector('.stopwatch'));
+   
