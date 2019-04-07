@@ -1,85 +1,66 @@
-class Stopwatch {
-    constructor(display) {
-        this.running = false;
-        this.display = display;
-        this.laps = [];
-        this.reset();
-        this.print(this.times);
-    }
-    
-    reset() {
-        this.times = [ 0, 0, 0 ];
-    }
-    
-    start() {
-        if (!this.time) this.time = performance.now();
-        if (!this.running) {
-            this.running = true;
-            requestAnimationFrame(this.step.bind(this));
-        }
-    }
-    
-    stop() {
-        this.running = false;
-        this.time = null;
-    }
+let timeInterval;
 
-    restart() {
-        if (!this.time) this.time = performance.now();
-        if (!this.running) {
-            this.running = true;
-            requestAnimationFrame(this.step.bind(this));
-        }
-        this.reset();
-        this.stop();
-        this.print();
-    }
-
-    
-    step(timestamp) {
-        if (!this.running) return;
-        this.calculate(timestamp);
-        this.time = timestamp;
-        this.print();
-        requestAnimationFrame(this.step.bind(this));
-    }
-    
-    calculate(timestamp) {
-        var diff = timestamp - this.time;
-        // Hundredths of a second are 100 ms
-        this.times[2] += diff / 10;
-        // Seconds are 100 hundredths of a second
-        if (this.times[2] >= 100) {
-            this.times[1] += 1;
-            this.times[2] -= 100;
-        }
-        // Minutes are 60 seconds
-        if (this.times[1] >= 60) {
-            this.times[0] += 1;
-            this.times[1] -= 60;
-        }
-    }
-    
-    print() {
-        this.display.innerText = this.format(this.times);
-    }
-    
-    format(times) {
-        return `\
-${pad0(times[0], 2)}:\
-${pad0(times[1], 2)}:\
-${pad0(Math.floor(times[2]), 2)}`;
-    }
+function getTimeRemaining(endtime) {
+  var t = endtime - performance.now();
+  var seconds = Math.floor((t / 1000) % 60);
+  var minutes = Math.floor((t / 1000 / 60) % 60);
+  return {
+    'total': t,
+    'minutes': minutes,
+    'seconds': seconds
+  };
 }
 
-function pad0(value, count) {
-    var result = value.toString();
-    for (; result.length < count; --count)
-        result = '0' + result;
-    return result;
+function initializeClock(id, endtime) {
+    var clock = document.getElementById(id);
+    var minutesSpan = clock.querySelector('.minutes');
+    var secondsSpan = clock.querySelector('.seconds');
+
+    function updateClock() {
+        var t = getTimeRemaining(endtime);
+
+        minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+        secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+        if (t.total <= 0) {
+          clearTimer();
+        }
+  }
+  updateClock();
+  timeinterval = setInterval(updateClock, 1000);
+}
+
+function clearTimer(){
+    clearInterval(timeinterval);
+    setInitialClock();
+}
+
+function setInitialClock(){
+    var clock = document.getElementById('clockdiv');
+    var minutesSpan = clock.querySelector('.minutes');
+    var secondsSpan = clock.querySelector('.seconds');
+    minutesSpan.innerHTML = '0';
+    secondsSpan.innerHTML = '0';
+}
+
+function startTimer(){
+    let eggType = parseInt(document.getElementById("eggType").value);
+    let deadline = getEggTime(eggType) + performance.now();
+    initializeClock('clockdiv', deadline);
+}
+
+function getEggTime(type){
+    if(type == 1){
+        return 20*60*1000;
+    }else if(type==2){
+        return 10*60*1000;
+    }else{
+        return 5*60*1000;
+    }
+    
 }
 
 
-let stopwatch = new Stopwatch(
-    document.querySelector('.stopwatch'));
+setInitialClock();
+
    

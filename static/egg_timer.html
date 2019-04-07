@@ -25,7 +25,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text">Egg Type</span>
           </div>
-          	<select class="form-control">
+          	<select class="form-control" id="eggType">
           	    <option value=1>Hard Boiled</option>
 				<option value=2>Medium Boiled</option>
 				<option value=3>Soft Boiled</option>
@@ -42,14 +42,23 @@
       </div>
     </div>
      
-    <button type="button" class="btn btn-primary" onClick="stopwatch.start();">Start Timer</button>
-    <button type="button" class="btn btn-primary" onClick="stopwatch.stop()">Stop Timer</button>
-    <button type="button" class="btn btn-primary" onClick="stopwatch.restart()">Reset Timer</button>
+    <button type="button" class="btn btn-primary" onClick="startTimer()">Start Timer</button>
+    <button type="button" class="btn btn-primary" onClick="clearTimer()">Reset Timer</button>
+  
     <br><br>
 
-	<div class="card" ">
-		<h4 class="card-header text-center">Time</h4>
-	 	<div class="stopwatch"></div>
+	<div class="card">
+		<h2 class="card-header text-center">Time</h2>
+		<div id="clockdiv">
+		  <div>
+			<span class="minutes"></span>
+			<div class="smalltext">Minutes</div>
+		  </div>
+		  <div>
+			<span class="seconds"></span>
+			<div class="smalltext">Seconds</div>
+		  </div>
+		</div>
 	</div>
 
 </div>
