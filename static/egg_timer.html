@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Egg Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="style/eggTimer.css">
+  
+</head>
+<body>
+
+<div class="container">
+    <h3 class="text-center my-3">Egg Timer</h3>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Location</span>
+      </div>
+      <input id="learningRate" type="number" value=0.5 placeholder="Learning rate" class="form-control">
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Egg Type</span>
+          </div>
+          	<select class="form-control" id="eggType">
+          	    <option value=1>Hard Boiled</option>
+				<option value=2>Medium Boiled</option>
+				<option value=3>Soft Boiled</option>
+          	</select>
+        </div>
+      </div>
+      <div class="col">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Y</span>
+          </div>
+          <input id="w_v_y" type="number" value=0 placeholder="weight vector y" class="form-control">
+        </div>
+      </div>
+    </div>
+     
+    <button type="button" class="btn btn-primary" onClick="startTimer()">Start Timer</button>
+    <button type="button" class="btn btn-primary" onClick="clearTimer()">Reset Timer</button>
+  
+    <br><br>
+
+	<div class="card">
+		<h2 class="card-header text-center">Time</h2>
+		<div id="clockdiv">
+		  <div>
+			<span class="minutes"></span>
+			<div class="smalltext">Minutes</div>
+		  </div>
+		  <div>
+			<span class="seconds"></span>
+			<div class="smalltext">Seconds</div>
+		  </div>
+		</div>
+	</div>
+
+</div>
+<script src="script/stopWatch.js"></script>
+
+</body>
+</html>
