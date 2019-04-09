@@ -25,6 +25,8 @@ h1{
 	border-radius: 3px;
 	background: #00BF96;
 	display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #clockdiv div > span{

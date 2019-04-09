@@ -7,15 +7,39 @@
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="style/eggTimer.css">
-  
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
+  <link href='/style/style.css' rel='stylesheet' defer>
 </head>
-<body>
-
+    <script type="module">
+    let altitude = 0;
+    document.addEventListener('DOMContentLoaded', () => {
+        function getLocation() {
+            let location;
+            if (navigator.geolocation) {
+            location = navigator.geolocation;
+            console.log(location.getCurrentPosition(getAltitude));
+            } else { 
+            console.log("position not found");
+            }
+        }
+        function getAltitude(position) {
+          altitude = position.coords.altitude;
+          document.getElementById("loc").innerHTML
+        }
+        getLocation();
+    });
+    </script>
+    
+<body style='display: flex; flex-direction: column;'>
+		<div class='header'>
+			<h1><a href="index.html">Home</a></h1>
+		</div>
 <div class="container">
-    <h3 class="text-center my-3">Egg Timer</h3>
+    <h3 class="text-center my-3">Cook Your Perfect Egg</h3>
+    <img src="https://kirbiecravings.com/wp-content/uploads/2017/01/instant-pot-soft-hard-boiled-eggs-4ab.jpg" class="rounded-circle" alt="Hard boiled eggs" width="304" height="236" style="margin-bottom: 20px;">
     <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text">Location</span>
+      <div class="text-group-prepend">
+        <span class="input-group-text" id="loc">Location</span>
       </div>
       <input id="learningRate" type="number" value=0.5 placeholder="Learning rate" class="form-control">
     </div>
@@ -35,9 +59,12 @@
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text">Y</span>
+            <span class="input-group-text">Egg Size</span>
           </div>
-          <input id="w_v_y" type="number" value=0 placeholder="weight vector y" class="form-control">
+            <select class="form-control" id="eggSize">
+          	    <option value=1>Large</option>
+				<option value=2>Medium</option>
+          	</select>
         </div>
       </div>
     </div>
