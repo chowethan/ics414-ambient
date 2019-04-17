@@ -98,3 +98,45 @@ label {
 .item {
 	padding: 10px 0;
 }
+
+.container.custom-container {
+    background-color: #F7B05B;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    height: 70vh;
+}
+
+.container.left-home-input {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    display: flex;
+	flex-direction: column;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 10px;
+    background-color: #F7CE5B; 
+    height: 50hv;
+}
+
+hr {
+  border: 0;
+  clear:both;
+  display:block;
+  width: 96%;               
+  background-color: black;
+  height: 1px;
+}
+
+.headerDivider {
+    margin-top: 1vh;
+    border-left:1px solid #38546d; 
+    border-right:1px solid #16222c; 
+    height:60vh;
+
+
+}
+
+.container.footer {
+    background-color: #DFD6A7;
+}

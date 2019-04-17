@@ -3,9 +3,11 @@
 	<head>
 		<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
 		<title>App</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
 		<link href='/style/style.css' rel='stylesheet' defer>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js' integrity='sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=' crossorigin='anonymous'></script>
+
 		<script type="module">
 			import ListItem from '/script/component/ListItem.js';
 			
@@ -27,10 +29,9 @@
                     event_string += alert_time[1] + ":" + alert_time[0];
                     
                     let events = document.getElementById('events');
-                    let item = new ListItem();
-                    item.dataset.id = 1;
-                    item.setAttribute('text', event_string);
-                    //item.setAttribute('detail', 'Connected');
+                    var item = document.createElement('li');
+                    item.innerHTML = event_string;
+                    item.setAttribute('class', 'list-group-item');
                     events.appendChild(item);
                 }
     
@@ -105,60 +106,70 @@
             
 		</script>
 	</head>
-	<body style='display: flex; flex-direction: column;'>
-		<div class='header'>
-			<div class='back'>
-                <a href="index.html"><svg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.cls-1{fill:var(--theme-color);}</style></defs><polygon class='cls-1' points='82.85 43.93 23.22 43.93 53.03 14.11 44.46 5.54 0 49.99 44.45 94.46 44.46 94.46 53.03 85.88 23.22 56.06 82.85 56.06 100 56.06 100 43.93 82.85 43.93'/></svg></a>
-			</div>
+	<body style='display: flex; flex-direction: column; background-color:#3d3d35'>
+		<div class='header' style="background-color: #AF9B46">
 			<h1><a href="index.html">Home</a></h1>
 		</div>
-		<div class='content'>
-			<div>
-				<h1>Events</h1>
-				<ambient-list id='events'></ambient-list>
-<!--				<div id='devices'><ambient-item text='Device' detail='Yeelight White Tunable'></ambient-item></div>-->
-			</div>
+		<div class='custom-container container rounded'>
+            <div class="row">
+			<div class="col">
+                <div class='left-home-input container'>
+                    <h1>Events</h1>
+                    <hr>
 
-            <div>
-				<h1>Add Event</h1>
-				<div>
-					<label>Day of week</label>
-					<div>
-                        <select id="day">
-                          <option value=1>monday</option>
-                          <option value=2>tuesday</option>
-                          <option value=3>wednesday</option>
-                          <option value=4>thursday</option>
-                          <option value=5>friday</option>
-                          <option value=6>saturday</option>
-                          <option value=0>sunday</option>
-                        </select>
-					</div>
-				</div>
-				<div>
-					<label>Hour</label>
-					<div>
-						<input type="number" id="hour" placeholder="hour 0-23">
-					</div>
-				</div>
-				<div>
-					<label>Minute</label>
-					<div>
-						<input type="number" id="minute" placeholder="minute 0-59">
-					</div>
-				</div> 
-  				<div>
-					<label>Set Alert</label>
-					<div>
-						<button id="set_alert">Set Alert</button>
-					</div>
-				</div>                   
+                    <ul class="list-group" id='events'></ul>
+    <!--				<div id='devices'><ambient-item text='Device' detail='Yeelight White Tunable'></ambient-item></div>-->
+                </div>
 			</div>
-		</div>
-		<div class='menu'>
-            <div><span class='label'><a href="index.html"><span class='label'>Home</span></a></span></div>
-			<div class='active'><div class='label'>Events</div></div>
-			<div><span class='label'>Devices</span></div>
-		</div>
+            <div class="headerDivider"></div>
+            <div class="col">
+                <div class='left-home-input container'>
+                    <h1>Add Event</h1>
+                    <hr>
+                    <div>
+                        <label>Day of week</label>
+                        <div>
+                            <select id="day">
+                              <option value=1>monday</option>
+                              <option value=2>tuesday</option>
+                              <option value=3>wednesday</option>
+                              <option value=4>thursday</option>
+                              <option value=5>friday</option>
+                              <option value=6>saturday</option>
+                              <option value=0>sunday</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Hour</label>
+                        <div>
+                            <input type="number" id="hour" placeholder="hour 0-23">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Minute</label>
+                        <div>
+                            <input type="number" id="minute" placeholder="minute 0-59">
+                        </div>
+                    </div> 
+                    <div>
+                        <label>Set Alert</label>
+                        <div>
+                            <button class="btn btn-primary" id="set_alert">Set Alert</button>
+                        </div>
+                    </div>                   
+			     </div>
+            </div>
+            <br><br>
+		  </div>
+        </div>
+        <div class="footer container rounded">
+            <div class='menu' style="margin-bottom: 20px;">
+                <div><span class='label'><a href="index.html"><span class='label'>Home</span></a></span></div>
+                <div class='active'><div class='label'>Events</div></div>
+                <div><span class='label'><a href="egg_timer.html"><span class='label'>Egg Timer</span></a></span></div>
+            </div>
+        </div>
+        
 	</body>
 </html>

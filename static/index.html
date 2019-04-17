@@ -6,6 +6,7 @@
 		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
 		<link href='/style/style.css' rel='stylesheet' defer>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js' integrity='sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=' crossorigin='anonymous'></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<script type="module">
 			import ListItem from '/script/component/ListItem.js';
 			
@@ -131,80 +132,104 @@
                     }
                     return true;
                 }
+            
 		</script>
 	</head>
-	<body style='display: flex; flex-direction: column;'>
-		<div class='header'>
-			<div class='back'>
-				<svg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><style>.cls-1{fill:var(--theme-color);}</style></defs><polygon class='cls-1' points='82.85 43.93 23.22 43.93 53.03 14.11 44.46 5.54 0 49.99 44.45 94.46 44.46 94.46 53.03 85.88 23.22 56.06 82.85 56.06 100 56.06 100 43.93 82.85 43.93'/></svg>
-			</div>
+	<body style='display: flex; flex-direction: column; background-color:#3d3d35'>
+		<div class='header' style="background-color: #AF9B46">
 			<h1>Home</h1>
 		</div>
-		<div class='content'>
-			<div>
-				<h1>Connected Devices</h1>
-				<ambient-list id='devices'></ambient-list>
-<!--				<div id='devices'><ambient-item text='Device' detail='Yeelight White Tunable'></ambient-item></div>-->
-			</div>
-			<div>
-				<h1>Device Control</h1>
-				<div>
-					<label>On/Off</label>
-					<div>
-						<button id='toggle'>Toggle</button>
-					</div>
-				</div>
-				<div>
-					<label>Temperature</label>
-					<div>
-						<button id='warm'>Warm</button>
-						<button id='cold'>Cold</button>
-					</div>
-					<div>
-						<input id='temperature' type='range' min='1700' max='6500'>
-					</div>
-				</div>
-			</div>
-            <div>
-				<h1>Add Event</h1>
-				<div>
-					<label>Day of week</label>
-					<div>
-                        <select id="day">
-                          <option value=1>monday</option>
-                          <option value=2>tuesday</option>
-                          <option value=3>wednesday</option>
-                          <option value=4>thursday</option>
-                          <option value=5>friday</option>
-                          <option value=6>saturday</option>
-                          <option value=0>sunday</option>
-                        </select>
-					</div>
-				</div>
-				<div>
-					<label>Hour</label>
-					<div>
-						<input type="number" id="hour" placeholder="hour 0-23">
-					</div>
-				</div>
-				<div>
-					<label>Minute</label>
-					<div>
-						<input type="number" id="minute" placeholder="minute 0-59">
-					</div>
-				</div> 
-  				<div>
-					<label>Set Alert</label>
-					<div>
-						<button id="set_alert">Set Alert</button>
-					</div>
-				</div>                   
-			</div>
+		<div class='custom-container container rounded'>
+            <div class="row">
+                <div class="col">
+                    <div class='left-home-input container'>
+
+                        <h3>Connected Devices</h3>
+                        <hr>
+                        <ambient-list id='devices'></ambient-list>
+        <!--				<div id='devices'><ambient-item text='Device' detail='Yeelight White Tunable'></ambient-item></div>-->
+                    </div>
+                </div>
+                <div class="headerDivider"></div>
+                <div class="col" >
+                    <div class='left-home-input container'>
+                        <h3>Device Control</h3>
+                        <hr>
+                        <div>
+                            <label>On/Off</label>
+                            <div>
+                                <button class="btn btn-primary" id='toggle'>Toggle</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <label>Temperature</label>
+                            <div>
+                                <button class="btn btn-primary" id='warm'>Warm</button>
+                                <button class="btn btn-primary" id='cold'>Cold</button>
+                            </div>
+                            <br><br>
+                         
+                            <div>
+                                <span class="font-weight-bold indigo-text">Cool</span>
+
+                                        <input id='temperature' type='range' min='1700' max='6500'>
+
+                                <span class="font-weight-bold indigo-text ml-2 mt-1">Warm</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="headerDivider"></div>
+                <div class="col">
+                    <div class='left-home-input container'>
+                        <h3>Add Event</h3>
+                        <hr>
+                        <div>
+                            <label>Day of week</label>
+                            <div>
+                                <select id="day">
+                                  <option value=1>monday</option>
+                                  <option value=2>tuesday</option>
+                                  <option value=3>wednesday</option>
+                                  <option value=4>thursday</option>
+                                  <option value=5>friday</option>
+                                  <option value=6>saturday</option>
+                                  <option value=0>sunday</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Hour</label>
+                            <div>
+                                <input type="number" id="hour" placeholder="hour 0-23">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Minute</label>
+                            <div>
+                                <input type="number" id="minute" placeholder="minute 0-59">
+                            </div>
+                        </div> 
+                        <div>
+                            <br>
+                            <div>
+                                <button class="btn btn-primary" id="set_alert">Set Alert</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 		</div>
-		<div class='menu'>
-			<div class='active'><div class='label'>Home</div></div>
+            <br><br>
+     </div>
+        
+    <div class="footer container rounded">
+        <div class='menu' style="margin-bottom: 20px;">
+            <div class='active'><div class='label'>Home</div></div>
             <div><span class='label'><a href="event.html"><span class='label'>Events</span></a></span></div>
-			<div><span class='label'>Devices</span></div>
-		</div>
+            <div><span class='label'><a href="egg_timer.html"><span class='label'>Egg Timer</span></a></span></div>
+        </div>
+    </div>
 	</body>
 </html>
