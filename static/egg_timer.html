@@ -78,10 +78,10 @@
     function getLocation() {
         let location;
         if (navigator.geolocation) {
-        location = navigator.geolocation;
-        console.log(location.getCurrentPosition(getAltitude));
+            location = navigator.geolocation;
+            console.log(location.getCurrentPosition(getAltitude));
         } else { 
-        console.log("position not found");
+            console.log("position not found");
         }
     }
     function getAltitude(position) {
