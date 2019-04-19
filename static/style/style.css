@@ -30,10 +30,6 @@ h1 {
 	font-size: 1.4rem;
 }
 
-.content > div {
-	border-right: 1px solid #CCC;
-}
-
 label {
 	display: block;
 }
@@ -71,6 +67,7 @@ label {
 .content {
 	flex: 1;
 	display: flex;
+	overflow: auto;
 }
 
 .footer {
@@ -116,11 +113,9 @@ label {
 }
 
 .container.custom-container {
-    flex: 1;
 /*    background-color: #F7B05B;*/
     margin-bottom: 20px;
     margin-top: 20px;
-    overflow: auto;
 }
 
 .container.left-home-input {

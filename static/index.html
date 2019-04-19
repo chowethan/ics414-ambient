@@ -135,89 +135,91 @@
 		<div class='header'>
 			<h1>Home</h1>
 		</div>
-		<div class='custom-container container rounded'>
-			<div class='row'>
-				<div class='col'>
-					<div class='left-home-input container'>
+		<div class='content'>
+			<div class='custom-container container rounded'>
+				<div class='row'>
+					<div class='col'>
+						<div class='left-home-input container'>
 
-						<h3>Connected Devices</h3>
-						<hr>
-						<ambient-list id='devices'></ambient-list>
-						<!--				<div id='devices'><ambient-item text='Device' detail='Yeelight White Tunable'></ambient-item></div>-->
-					</div>
-				</div>
-				<div class='headerDivider'></div>
-				<div class='col'>
-					<div class='left-home-input container'>
-						<h3>Device Control</h3>
-						<hr>
-						<div>
-							<label>On/Off</label>
-							<div>
-								<button id='toggle'>Toggle</button>
-							</div>
-						</div>
-						<br>
-						<div>
-							<label>Temperature</label>
-							<div>
-								<button id='warm'>Warm</button>
-								<button id='cold'>Cold</button>
-							</div>
-							<br><br>
-
-							<div>
-								<span class='font-weight-bold indigo-text'>Cool</span>
-
-								<input id='temperature' type='range' min='1700' max='6500'>
-
-								<span class='font-weight-bold indigo-text ml-2 mt-1'>Warm</span>
-
-							</div>
+							<h3>Connected Devices</h3>
+							<hr>
+							<ambient-list id='devices'></ambient-list>
+							<!--				<div id='devices'><ambient-item text='Device' detail='Yeelight White Tunable'></ambient-item></div>-->
 						</div>
 					</div>
-				</div>
-				<div class='headerDivider'></div>
-				<div class='col'>
-					<div class='left-home-input container'>
-						<h3>Add Event</h3>
-						<hr>
-						<div>
-							<label>Day of week</label>
+					<div class='headerDivider'></div>
+					<div class='col'>
+						<div class='left-home-input container'>
+							<h3>Device Control</h3>
+							<hr>
 							<div>
-								<select id='day'>
-									<option value=1>monday</option>
-									<option value=2>tuesday</option>
-									<option value=3>wednesday</option>
-									<option value=4>thursday</option>
-									<option value=5>friday</option>
-									<option value=6>saturday</option>
-									<option value=0>sunday</option>
-								</select>
+								<label>On/Off</label>
+								<div>
+									<button id='toggle'>Toggle</button>
+								</div>
 							</div>
-						</div>
-						<div>
-							<label>Hour</label>
-							<div>
-								<input type='number' id='hour' placeholder='hour 0-23'>
-							</div>
-						</div>
-						<div>
-							<label>Minute</label>
-							<div>
-								<input type='number' id='minute' placeholder='minute 0-59'>
-							</div>
-						</div>
-						<div>
 							<br>
 							<div>
-								<button id='set_alert'>Set Alert</button>
+								<label>Temperature</label>
+								<div>
+									<button id='warm'>Warm</button>
+									<button id='cold'>Cold</button>
+								</div>
+								<br><br>
+
+								<div>
+									<span class='font-weight-bold indigo-text'>Cool</span>
+
+									<input id='temperature' type='range' min='1700' max='6500'>
+
+									<span class='font-weight-bold indigo-text ml-2 mt-1'>Warm</span>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class='headerDivider'></div>
+					<div class='col'>
+						<div class='left-home-input container'>
+							<h3>Add Event</h3>
+							<hr>
+							<div>
+								<label>Day of week</label>
+								<div>
+									<select id='day'>
+										<option value=1>monday</option>
+										<option value=2>tuesday</option>
+										<option value=3>wednesday</option>
+										<option value=4>thursday</option>
+										<option value=5>friday</option>
+										<option value=6>saturday</option>
+										<option value=0>sunday</option>
+									</select>
+								</div>
+							</div>
+							<div>
+								<label>Hour</label>
+								<div>
+									<input type='number' id='hour' placeholder='hour 0-23'>
+								</div>
+							</div>
+							<div>
+								<label>Minute</label>
+								<div>
+									<input type='number' id='minute' placeholder='minute 0-59'>
+								</div>
+							</div>
+							<div>
+								<br>
+								<div>
+									<button id='set_alert'>Set Alert</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<br><br>
 			</div>
-			<br><br>
 		</div>
 
 		<div class='footer'>
