@@ -80,7 +80,7 @@ select {
 }
 
 select:hover {
-	background: rgba(0, 0, 0, 0.08);
+/*	background: rgba(0, 0, 0, 0.08);*/
 }
 
 input:focus,
@@ -96,6 +96,8 @@ input[type=submit],
 button {
 	min-width: 64px;
 	margin: 0 5px;
+	border: 1px solid var(--theme-secondary-color);
+	background: var(--theme-secondary-color);
 	font-weight: bold;
 	text-transform: uppercase;
 	transition: border-color 50ms, background 50ms, box-shadow 250ms;
