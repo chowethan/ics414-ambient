@@ -1,0 +1,62 @@
+body {
+  background: url("../image/kawaii-eggs-pattern-petitspixels.png");
+  font-family: 'Merienda';
+}
+
+.navbar {
+  background-color: #FFDE00;
+  font-weight: 400;
+}
+
+.active {
+  border-bottom: 2px solid rgba(0, 0, 0) !important;
+}
+
+.nav-link {
+  margin-right: 10px;
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+a.nav-link:hover {
+  color: rgba(0, 0, 0) !important;
+  border-bottom: 2px solid rgba(255, 255, 255);
+}
+
+.l1-txt3 {
+  font-size: 36px;
+  line-height: 1;
+}
+
+
+
+.s1-txt1 {
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.how-countdown {
+  background-color: #fff;
+  border-radius: 18px;
+  margin: 0px 18px 25px 18px;
+  height: 90px;
+  align-items: center;
+  justify-content: center;
+}
+
+h3 {
+  text-transform: uppercase;
+}
+
+.btn-timer {
+    color: #000000;
+    background-color: #ffffff;
+    font-size: 2rem;
+    outline: none;
+}
+.btn-timer:hover, .btn-timer:focus, .open>.dropdown-toggle.btn-timer {
+    color: #FFDE00;
+    background-color: #ffffff;
+    border-color: #ffffff;
+    box-shadow: none;
+}
