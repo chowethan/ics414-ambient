@@ -2,6 +2,45 @@ let altitude = 0;
 let r_medium = 0.0225;
 let r_large = 0.0223;
 let alpha = 1.53e-7;
+
+function http_request(url, method, headers, body) {
+    return new Promise((resolve, reject) => {
+        let request = new XMLHttpRequest();
+
+        request.addEventListener("load", (event) => {
+            resolve(request.responseText);
+        });
+        request.addEventListener("error", (event) => {
+            reject(event);
+        });
+        request.addEventListener("abort", (event) => {
+            reject(event);
+        });
+
+        request.open(method, url, true);
+        if (!headers || headers[0] !== null) {
+            request.setRequestHeader("Cache-Control", "no-cache");
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        }
+
+        if (headers) {
+            for (let i = 0; i < headers.length; i++) {
+                if (headers[i]) {
+                    request.setRequestHeader(headers[i][0], headers[i][1]);
+                }
+            }
+        }
+
+        request.send(body);
+    });
+}
+	
+function getJSON(url) {
+    return http_request(url, "GET", null, null).then((response, request) => {
+        return JSON.parse(response);
+    });
+};
+
 function getLocation() {
     let location;
     document.getElementById("loc").innerHTML = "Currently Obtaining your altitude";
@@ -12,20 +51,18 @@ function getLocation() {
         console.log("position not found");
     }
 }
-function getAltitude(position) {
+async function getAltitude(position) {
     altitude = position.coords.altitude;
     // document.getElementById("loc").innerHTML = altitude + " meters";
-    const Http = new XMLHttpRequest();
     const url='https://elevation-api.io/api/elevation?points=('+ position.coords.latitude +"," + position.coords.longitude + ')';
-    Http.open("GET", url);
-    Http.send();
-    Http.onreadystatechange=(e)=>{
-        let response_txt = Http.responseText;
-        response_txt = '[' + response_txt + ']';
-        let value = JSON.parse(response_txt);
-        altitude = value[0].elevations[0].elevation;
-        document.getElementById("loc").innerHTML = "Your altitude is: " + altitude + " meters";
+    
+    // Only use external API to obtain altitude if Geolocation API implementation does not provide it
+    if (altitude === null) {
+        let data = await getJSON(url);
+        altitude = data.elevations[0].elevation;
     }
+    
+    document.getElementById("loc").innerHTML = "Your altitude is: " + altitude + " meters";
 }
 
 function calculateCookTime(t_b, t_c, t_0, r, alpha){
