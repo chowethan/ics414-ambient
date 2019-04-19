@@ -1,4 +1,5 @@
 let timeInterval;
+let running = false;
 
 function getTimeRemaining(endtime) {
 	var t = endtime - performance.now();
@@ -31,6 +32,7 @@ function initializeClock(id, endtime) {
 function clearTimer() {
 	clearInterval(timeinterval);
 	setInitialClock();
+    running = false;
 }
 
 function setInitialClock() {
@@ -42,9 +44,12 @@ function setInitialClock() {
 }
 
 function startTimer() {
-	let eggType = parseInt(document.getElementById('eggType').value);
-	let deadline = getEggTime(eggType) + performance.now();
-	initializeClock('clockdiv', deadline);
+    if(!running){
+        let eggType = parseInt(document.getElementById('eggType').value);
+        let deadline = getEggTime(eggType) + performance.now();
+        initializeClock('clockdiv', deadline);
+        running = true;
+    }
 }
 
 function getEggTime(type) {
