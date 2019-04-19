@@ -4,7 +4,12 @@
 	font-family: "Roboto", Helvetica, "Times New Roman", sans-serif;
 /*	font-size: 2.6vh;*/
 
-	--theme-color: #E53935;
+	--theme-primary-color: #FFEC95;
+	--theme-primary-light-color: #FFFFC7;
+	--theme-primary-dark-color: #CABA66;
+	--theme-secondary-color: #94D9FF;
+	--theme-secondary-light-color: #C8FFFF;
+	--theme-secondary-dark-color: #61A8CC;
 	--divider-color: #B3B3B3;
 	--menu-height: 8vh;
 	--menu-item-default-color: #5D5D5D;
@@ -12,10 +17,13 @@
 }
 
 body {
+    display: flex;
+    flex-direction: column;
 	margin: 0;
 	padding: 0;
 	width: 100vw;
 	height: 100vh;
+    background: var(--theme-primary-light-color);
 }
 
 h1 {
@@ -33,11 +41,10 @@ label {
 .header {
 	position: relative;
 	display: inline-flex;
-	color: var(--theme-color);
 	height: 56px;
 	box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.17);
 	user-select: none;
-    background-color: #AF9B46;
+    background-color: var(--theme-primary-dark-color);
 }
 
 .header .back {
@@ -66,6 +73,10 @@ label {
 	display: flex;
 }
 
+.footer {
+    background: var(--theme-primary-color);
+}
+
 .menu {
 	display: flex;
 	flex-direction: row;
@@ -76,23 +87,27 @@ label {
 	font-size: 0.9em;
 }
 
-.menu > div {
+.menu > a {
 	--menu-item-color: var(--menu-item-default-color);
 	display: flex;
 	flex-direction: column;
 	width: var(--menu-item-width);
 	padding: 0.3125rem 0.4rem 0 0.4rem;
 	border-bottom: 3px solid rgba(0, 0, 0, 0);
-	color: var(--menu-item-color);
+	color: var(--menu-item-color) !important;
 	cursor: pointer;
 }
 
-.menu > div.active {
-	--menu-item-color: var(--theme-color);
-	border-bottom-color: var(--menu-item-color);
+.menu > a:hover {
+    text-decoration: none;
 }
 
-.menu > div .label {
+.menu > a.active {
+	--menu-item-color: var(--theme-secondary-dark-color);
+	border-bottom-color: var(--theme-secondary-color);
+}
+
+.menu > a .label {
 	margin: auto;
 }
 
@@ -101,10 +116,11 @@ label {
 }
 
 .container.custom-container {
-    background-color: #F7B05B;
+    flex: 1;
+/*    background-color: #F7B05B;*/
     margin-bottom: 20px;
     margin-top: 20px;
-    height: 70vh;
+    overflow: auto;
 }
 
 .container.left-home-input {
@@ -116,7 +132,7 @@ label {
     margin-left: 5px;
     margin-right: 5px;
     border-radius: 10px;
-    background-color: #F7CE5B; 
+/*    background-color: #F7CE5B; */
     height: 50hv;
 }
 

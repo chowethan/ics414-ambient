@@ -5,21 +5,21 @@
   <title>Egg Timer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
   
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="style/eggTimer.css">
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" defer>
+  <link rel="stylesheet" href="style/eggTimer.css" defer>
   <link href='/style/style.css' rel='stylesheet' defer>
 </head>
-<body style='display: flex; flex-direction: column; background-color: #F7B05B;'>
+<body>
         <div class='header'>
-			<h1><a href="index.html">Home</a></h1>
+			<h1>Egg Timer</h1>
 		</div>
 <div class="custom-container container rounded">
     <h3 class="text-center my-3">Cook Your Perfect Egg</h3>
-    <img src="https://kirbiecravings.com/wp-content/uploads/2017/01/instant-pot-soft-hard-boiled-eggs-4ab.jpg" class="rounded-circle" alt="Hard boiled eggs" width="304" height="236" style="margin-bottom: 20px;">
+    <img src="https://kirbiecravings.com/wp-content/uploads/2017/01/instant-pot-soft-hard-boiled-eggs-4ab.jpg" class="rounded-circle" alt="Hard boiled eggs" style="width: 300px; margin-bottom: 20px;">
     <br>
     <br>
-    <button type="button" class="btn btn-primary" onClick="getLocation()">Get Current Altitude</button>
+    <button onClick="getLocation()">Get Current Altitude</button>
   <br><br>
     <div class="card bg-primary text-white  h-10">
         <div id="loc" class="card-body">Not Found</div>
@@ -105,8 +105,8 @@
         </div>  
     </div>
     <br>
-    <button type="button" class="btn btn-primary" onClick="startTimer()">Start Timer</button>
-    <button type="button" class="btn btn-primary" onClick="clearTimer()">Reset Timer</button>
+    <button type="button" onClick="startTimer()">Start Timer</button>
+    <button type="button" onClick="clearTimer()">Reset Timer</button>
   
     <br><br>
 
@@ -123,15 +123,15 @@
 		  </div>
 		</div>
 	</div>
-    <div class="footer container rounded">
-        <div class='menu' style="margin-bottom: 20px;">
-            <div><span class='label'><a href="index.html"><span class='label'>Home</span></a></span></div>
-            <div><span class='label'><a href="event.html"><span class='label'>Events</span></a></span></div>
-            <div class='active'><div class='label'>Egg Timer</div></div>
-        </div>
-    </div>    
-
 </div>
+    
+    <div class="footer">
+        <div class='menu'>
+            <a href='/'><div class='label'>Home</div></a>
+            <a href='event'><span class='label'><span class='label'>Events</span></span></a>
+            <a class='active'><span class='label'><span class='label'>Egg Timer</span></span></a>
+        </div>
+    </div>
 <script src="script/eggTimer.js"></script>
 <script src="script/stopWatch.js"></script>
 
