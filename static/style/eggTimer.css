@@ -1,17 +1,17 @@
-body{
+body {
 	text-align: center;
-/*  font-family: sans-serif;*/
-/*  font-weight: 100;*/
+	/*  font-family: sans-serif;*/
+	/*  font-weight: 100;*/
 }
 
-h1{
-/*  color: #396;*/
-  font-weight: 100;
-  font-size: 40px;
-  margin: 40px 0px 20px;
+h1 {
+	/*  color: #396;*/
+	font-weight: 100;
+	font-size: 40px;
+	margin: 40px 0px 20px;
 }
 
-#clockdiv{
+#clockdiv {
 	font-family: sans-serif;
 	color: #fff;
 	display: inline-block;
@@ -20,23 +20,23 @@ h1{
 	font-size: 30px;
 }
 
-#clockdiv > div{
+#clockdiv > div {
 	padding: 10px;
 	border-radius: 3px;
 	background: #00BF96;
 	display: inline-block;
-    margin-top: 20px;
-    margin-bottom: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
-#clockdiv div > span{
+#clockdiv div > span {
 	padding: 15px;
 	border-radius: 3px;
 	background: #00816A;
 	display: inline-block;
 }
 
-.smalltext{
+.smalltext {
 	padding-top: 5px;
 	font-size: 16px;
 }

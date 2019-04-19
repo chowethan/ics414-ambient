@@ -3,11 +3,10 @@
 	<head>
 		<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
 		<title>App</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" defer>
 		<link href='/style/style.css' rel='stylesheet' defer>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js' integrity='sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=' crossorigin='anonymous'></script>
-
 		<script type="module">
 			import ListItem from '/script/component/ListItem.js';
 			
@@ -108,7 +107,7 @@
 	</head>
 	<body style='display: flex; flex-direction: column; background-color:#3d3d35'>
 		<div class='header'>
-			<h1><a href="index.html">Home</a></h1>
+			<h1>Event Scheduler</h1>
 		</div>
 		<div class='custom-container container rounded'>
             <div class="row">
@@ -163,11 +162,11 @@
             <br><br>
 		  </div>
         </div>
-        <div class="footer container rounded">
-            <div class='menu' style="margin-bottom: 20px;">
-                <div><span class='label'><a href="index.html"><span class='label'>Home</span></a></span></div>
-                <div class='active'><div class='label'>Events</div></div>
-                <div><span class='label'><a href="egg_timer.html"><span class='label'>Egg Timer</span></a></span></div>
+        <div class="footer">
+            <div class='menu'>
+                <a href='/'><div class='label'>Home</div></a>
+                <a class='active'><span class='label'><span class='label'>Events</span></span></a>
+                <a href='egg_timer'><span class='label'><span class='label'>Egg Timer</span></span></a>
             </div>
         </div>
         
