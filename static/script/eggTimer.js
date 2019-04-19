@@ -29,6 +29,9 @@ function getAltitude(position) {
 }
 
 function calculateCookTime(t_b, t_c, t_0, r, alpha){
+    //t_b is temperature of the water
+    //t_c is desired egg temperature
+    //t_0 is initial egg temperature
     e1 = (r**2)/( (math.pi**2)*alpha)
     e2 = (math.log( (t_b-t_0) / (t_b-t_0) ))**2;
     //time is in seconds, so it needs ot be converted into milliseconds for the timer
