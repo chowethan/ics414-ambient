@@ -65,12 +65,21 @@ async function getAltitude(position) {
 	document.getElementById('loc').innerHTML = `Your altitude is: ${altitude} meters`;
 }
 
+function getEggTimeEqn(){
+    let water_temp = document.getElementById('exact_water_temp').value;
+    let egg_temp_target = document.getElementById('target_egg_temp').value;
+    //let eggSize = document.getElementById('eggSize');
+    let getInitialTemp = document.getElementById('exact_egg_temp').value;
+    return calculateCookTime(water_temp, egg_temp_target, getInitialTemp, r_large, alpha);
+}
+
 function calculateCookTime(t_b, t_c, t_0, r, alpha) {
 	//t_b is temperature of the water
 	//t_c is desired egg temperature
 	//t_0 is initial egg temperature
-	e1 = (r ** 2) / ((math.pi ** 2) * alpha)
-	e2 = (math.log((t_b - t_0) / (t_b - t_0))) ** 2;
+	e1 = (r ** 2) / ((Math.PI ** 2) * alpha);
+	e2 = (Math.log((t_b - t_0) / (t_b - t_c))) ** 2;
 	//time is in seconds, so it needs ot be converted into milliseconds for the timer
 	time = e1 * e2 * 1000;
+    return time;
 }

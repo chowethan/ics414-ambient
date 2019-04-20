@@ -12,6 +12,7 @@ function getTimeRemaining(endtime) {
 	};
 }
 
+
 function initializeClock(id, endtime) {
 	var clock = document.getElementById(id);
 	var minutesSpan = clock.querySelector('.minutes');
@@ -29,11 +30,13 @@ function initializeClock(id, endtime) {
 	timeinterval = setInterval(updateClock, 1000);
 }
 
+
 function clearTimer() {
 	clearInterval(timeinterval);
 	setInitialClock();
     running = false;
 }
+
 
 function setInitialClock() {
 	var clock = document.getElementById('clockdiv');
@@ -43,14 +46,17 @@ function setInitialClock() {
 	secondsSpan.innerHTML = '0';
 }
 
+
 function startTimer() {
     if(!running){
         let eggType = parseInt(document.getElementById('eggType').value);
-        let deadline = getEggTime(eggType) + performance.now();
+        //let deadline = getEggTime(eggType) + performance.now();
+        let deadline = getEggTimeEqn() + performance.now();
         initializeClock('clockdiv', deadline);
         running = true;
     }
 }
+
 
 function getEggTime(type) {
 	if (type == 1) {
