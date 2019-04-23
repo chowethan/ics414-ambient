@@ -29,7 +29,7 @@
 
 				<br>
 				<div class='eggTimerInputs container rounded'>
-					<span><h2>Default Options</h2></span>
+					<span><h2>Simple Options</h2></span>
 					<div class='row'>
 						<div class='col'>
 							<div class='input-group mb-2'>
@@ -57,17 +57,24 @@
 							</div>
 						</div>
 					</div>
-
 					<div class='row'>
 						<div class='col'>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Approximate Egg temperature before boiling</span>
 								</div>
-								<select class='form-control' id='approx_egg_temp_exact'>
+								<select class='form-control' id='approx_egg_temp'>
 									<option value=1>From Refrigerator</option>
 									<option value=2>Room Temperature</option>
 								</select>
+							</div>
+						</div>
+					</div>
+					<div class="alert alert-warning" role="alert">The calculated time accuracy can improve, using your location! Your altitude affects the time it takes to boil and cook the egg. This is optional.</div>
+					<div class='row'>
+						<div class='col'>
+							<div class='input-group mb-2'>
+								<button>Use Location</button>
 							</div>
 						</div>
 					</div>
@@ -91,7 +98,7 @@
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Exact Egg temperature before boiling</span>
 								</div>
-								<input type='number' id='init_egg_temp_exact' placeholder='degrees celcius' class='form-control'>
+								<input type='number' id='exact_egg_temp' placeholder='degrees celcius (ie, if it was taken from the refrigerator, the temperature of the refrigerator)' class='form-control'>
 							</div>
 						</div>
 					</div>
@@ -99,9 +106,9 @@
 						<div class='col'>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
-									<span class='input-group-text'>Exact Air Pressure</span>
+									<span class='input-group-text'>Exact Temperature of Water</span>
 								</div>
-								<input type='number' id='pressure_exact' placeholder='Exact air pressure' class='form-control'>
+								<input type='number' id='exact_water_temp' placeholder='degree celcius' class='form-control'>
 							</div>
 						</div>
 					</div>
