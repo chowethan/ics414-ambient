@@ -4,6 +4,14 @@ let r_large = 0.0233;
 let alpha = 1.53e-7;
 let mode = 1;
 
+let pressure_at_sealevel = 101325; // in pascals
+let boiling_point_at_sealevel = 373.15; //in kelvin
+
+let currentPressure = 0;
+
+let temperature = 0;
+let heat_of_vaporization = 40660;
+
 function http_request(url, method, headers, body) {
 	return new Promise((resolve, reject) => {
 		let request = new XMLHttpRequest();
@@ -42,7 +50,7 @@ function getJSON(url) {
 	});
 };
 
-function getLocation() {
+function getLocationAltitude() {
 	let location;
 	document.getElementById('loc').innerHTML = 'Currently Obtaining your altitude';
 	if (navigator.geolocation) {
@@ -52,6 +60,7 @@ function getLocation() {
 		console.log('position not found');
 	}
 }
+
 async function getAltitude(position) {
 	altitude = position.coords.altitude;
 	// document.getElementById('loc').innerHTML = altitude + ' meters';
@@ -64,6 +73,54 @@ async function getAltitude(position) {
 	}
 	
 	document.getElementById('loc').innerHTML = `Your altitude is: ${altitude} meters`;
+}
+
+//*************************** get the temperature from national weather service *************
+function getLocationTemperature() {
+	let location;
+	if (navigator.geolocation) {
+		location = navigator.geolocation;
+		console.log(location.getCurrentPosition(getForecast));
+	} else { 
+		console.log('position not found');
+	}
+}
+
+//a latitude and longitude point will not return forecast data, just a way to get actual forecast data
+function getForecast(position) {
+    console.log("lat: " + position.coords.latitude);
+    console.log("long: "+ position.coords.longitude);
+//the promise method doesn't work, idk why
+    //const url = `https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`;
+    //let data = await getJSON(url);
+    //console.log(data);
+    const Http = new XMLHttpRequest();
+    const url=`https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`;
+    Http.open("GET", url);
+    Http.send();
+    Http.onreadystatechange=(e)=>{
+        let response_txt = Http.responseText;
+        response_txt = '[' + response_txt + ']';
+        let value = JSON.parse(response_txt);
+        console.log(value[0]["properties"]["forecast"]);
+        getTemperature(value[0]["properties"]["forecast"])
+    }
+}
+
+//feed result url from getForecast(position) to get temperature
+    //this also has an altitude interestingly
+function getTemperature(forecastUrl){
+    const Http = new XMLHttpRequest();
+    const url=forecastUrl;
+    Http.open("GET", url);
+    Http.send();
+    Http.onreadystatechange=(e)=>{
+        let response_txt = Http.responseText;
+        response_txt = '[' + response_txt + ']';
+        let forecast = JSON.parse(response_txt);
+        temperature = forecast[0]["properties"]["periods"][0]["temperature"]
+        console.log(temperature);
+    }
 }
 
 function getEggTimeEqn(){
@@ -81,14 +138,40 @@ function calculateCookTime(t_b, t_c, t_0, r, alpha) {
 //r is radius of sphere used to approximate egg shape in meters
 //alpha is a parameter determined to be 1.53e-7
     //the equation is split into two parts so its easier (hopefully to understand)
-	e1 = (r ** 2) / ((Math.PI ** 2) * alpha);
-	e2 = (Math.log((t_b - t_0) / (t_b - t_c))) ** 2;
+	let e1 = (r ** 2) / ((Math.PI ** 2) * alpha);
+	let e2 = (Math.log((t_b - t_0) / (t_b - t_c))) ** 2;
 	//time is in seconds, so it needs ot be converted into milliseconds for the timer
-	time = e1 * e2 * 1000;
+	let time = e1 * e2 * 1000;
     return time;
 }
 
+// use the claudius clapyron equation to get temperature water boils at at different altitude
+function getBoilingTempOfWater(currentPressure){
+    let r_gas_const = 8.31432;
+    let e1 = 1/boiling_point_at_sealevel;
+    let e2 = (r_gas_const * log(currentPressure/pressure_at_sealevel))/heat_of_vaporization;
+    boiling_temp = 1/(e1-e2);
+    //returns temperature water boils at in celcius
+    let kelvin = 273.15;
+    return (boiling_temp-kelvin); 
+}
 
+//more precise way to get pressure, uses temperature and altitude
+function getBarometricPressure(){
+    let m = 0.0289644;
+    let r_gas_const = 8.31432;
+    let g = 9.80665;
+    let exp_value = (-m*g*altitude)/(r*temperature)
+    return 101325*exp(exp_value);
+}
+
+//less precise way to get pressure
+function getPressure(){
+    return 101325*((1-(2.25577e-5)*altitude)**5.25588)
+}
+
+
+//determine which mode user picked
 function pickMode(mode){
     let simple = document.getElementById("simple_container");
     let advanced = document.getElementById("advanced_container");
