@@ -1,6 +1,6 @@
 let altitude = 0;
 let r_medium = 0.0225;
-let r_large = 0.0223;
+let r_large = 0.0233;
 let alpha = 1.53e-7;
 
 function http_request(url, method, headers, body) {
@@ -74,9 +74,12 @@ function getEggTimeEqn(){
 }
 
 function calculateCookTime(t_b, t_c, t_0, r, alpha) {
-	//t_b is temperature of the water
-	//t_c is desired egg temperature
-	//t_0 is initial egg temperature
+//t_b is temperature of the water
+//t_c is desired egg temperature
+//t_0 is initial egg temperature
+//r is radius of sphere used to approximate egg shape in meters
+//alpha is a parameter determined to be 1.53e-7
+    //the equation is split into two parts so its easier (hopefully to understand)
 	e1 = (r ** 2) / ((Math.PI ** 2) * alpha);
 	e2 = (Math.log((t_b - t_0) / (t_b - t_c))) ** 2;
 	//time is in seconds, so it needs ot be converted into milliseconds for the timer
