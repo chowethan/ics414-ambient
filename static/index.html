@@ -28,7 +28,8 @@
 				</div>
 
 				<br>
-				<div class='eggTimerInputs container rounded'>
+<!--***************   simple options box   ********************************************-->
+				<div class='eggTimerInputs container rounded' onclick="pickMode(this)" id="simple_container" style="background-color: #f46e42">
 					<span><h2>Simple Options</h2></span>
                     <span><h5>A quick and easy way to get started cooking your perfect egg.</h5></span>
 					<div class='row'>
@@ -37,7 +38,7 @@
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Egg Type</span>
 								</div>
-								<select class='form-control' id='eggType'>
+								<select class='form-control' id='eggType_simple'>
 									<option value=1>Hard Boiled</option>
 									<option value=2>Medium Boiled</option>
 									<option value=3>Soft Boiled</option>
@@ -51,7 +52,7 @@
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Egg Size</span>
 								</div>
-								<select class='form-control' id='eggSize'>
+								<select class='form-control' id='eggSize_simple'>
 									<option value=1>Large</option>
 									<option value=2>Medium</option>
 								</select>
@@ -81,8 +82,10 @@
 					</div>
 				</div>
 				<br>
-				<div class='eggTimerInputs container rounded'>
+<!--***************   advanced options box   ********************************************-->
+				<div class='eggTimerInputs container rounded' onclick="pickMode(this)" id="advanced_container">
 					<span><h2>Advanced Options</h2></span>
+                    <span><h5>Pick your temperatures to cook your perfect egg.</h5></span>
 					<div class='row'>
 						<div class='col'>
 							<div class='input-group mb-2'>
@@ -90,6 +93,19 @@
 									<span class='input-group-text'>Egg Type</span>
 								</div>
 								<input type='number' id='target_egg_temp' placeholder='degrees celcius (The exact temperature you desire your finished egg to be at)' class='form-control'>
+							</div>
+						</div>
+					</div>
+                    <div class='row'>
+						<div class='col'>
+							<div class='input-group mb-3'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>Egg Size</span>
+								</div>
+								<select class='form-control' id='eggSize_adv'>
+									<option value=1>Large</option>
+									<option value=2>Medium</option>
+								</select>
 							</div>
 						</div>
 					</div>
@@ -115,18 +131,62 @@
 					</div>
 				</div>
                 <br>
-				<div class='eggTimerInputs container rounded'>
+ <!--***************   combined options box   ********************************************-->
+				<div class='eggTimerInputs container rounded' onclick="pickMode(this)" id="combined_container">
 					<span><h2>Combined Options</h2></span>
-					<div class='row'>
+                    <span><h5>Know some things, but don't know them all, use a combination.</h5></span>
+				    <div class='row'>
 						<div class='col'>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
-									<span class='input-group-text'>Egg Type</span>
+									<span class='input-group-text'>Egg Type Simple</span>
+								</div>
+								<select class='form-control' id='eggType_simple'>
+									<option value=1>Hard Boiled</option>
+									<option value=2>Medium Boiled</option>
+									<option value=3>Soft Boiled</option>
+								</select>
+							</div>
+						</div>
+					</div>
+                    <div class='row'>
+						<div class='col'>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>Egg Type Advanced</span>
 								</div>
 								<input type='number' id='target_egg_temp' placeholder='degrees celcius (The exact temperature you desire your finished egg to be at)' class='form-control'>
 							</div>
 						</div>
 					</div>
+                    <br>
+                    <div class='row'>
+						<div class='col'>
+							<div class='input-group mb-3'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>Egg Size</span>
+								</div>
+								<select class='form-control' id='eggSize_adv'>
+									<option value=1>Large</option>
+									<option value=2>Medium</option>
+								</select>
+							</div>
+						</div>
+					</div>
+                    <br>
+					<div class='row'>
+						<div class='col'>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>Approximate Egg temperature before boiling</span>
+								</div>
+								<select class='form-control' id='approx_egg_temp'>
+									<option value=1>From Refrigerator</option>
+									<option value=2>Room Temperature</option>
+								</select>
+							</div>
+						</div>
+					</div>   
 					<div class='row'>
 						<div class='col'>
 							<div class='input-group mb-2'>
@@ -137,6 +197,7 @@
 							</div>
 						</div>
 					</div>
+                    <br>
 					<div class='row'>
 						<div class='col'>
 							<div class='input-group mb-2'>

@@ -2,6 +2,7 @@ let altitude = 0;
 let r_medium = 0.0225;
 let r_large = 0.0233;
 let alpha = 1.53e-7;
+let mode = 1;
 
 function http_request(url, method, headers, body) {
 	return new Promise((resolve, reject) => {
@@ -85,4 +86,26 @@ function calculateCookTime(t_b, t_c, t_0, r, alpha) {
 	//time is in seconds, so it needs ot be converted into milliseconds for the timer
 	time = e1 * e2 * 1000;
     return time;
+}
+
+
+function pickMode(mode){
+    let simple = document.getElementById("simple_container");
+    let advanced = document.getElementById("advanced_container");
+    let combined = document.getElementById("combined_container"); 
+    
+    simple.style.background= "#F7CE5B";
+    advanced.style.background= "#F7CE5B";
+    combined.style.background= "#F7CE5B";
+    
+    mode.style.background = "#f46e42";
+    
+    if(mode.id == "simple_container"){
+        mode = 1;
+    }else if(mode.id == "advanced_container"){
+        mode = 2;
+    }else{
+        mode = 3;
+    }
+    
 }
