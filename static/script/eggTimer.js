@@ -64,6 +64,19 @@ function toggleAdvancedOptions() {
 	}
 }
 
+function getEggTemperature() {
+	let simpleEggTemperature = document.getElementById('approx_egg_temp');
+	let advancedEggTemperature = document.getElementById('exact_egg_temp');
+	
+	if (advancedEggTemperature.value.trim().length > 0) {
+		if (parseFloat(advancedEggTemperature.value)) {
+			return parseFloat(advancedEggTemperature.value);
+		}
+	}
+	
+	return parseFloat(simpleEggTemperature.value);
+}
+
 function getLocationAltitude() {
 	let location;
 	document.getElementById('loc').innerHTML = 'Currently Obtaining your altitude';
@@ -141,8 +154,7 @@ function getEggTimeEqn(){
     let water_temp = document.getElementById('exact_water_temp').value;
     let egg_temp_target = document.getElementById('target_egg_temp').value;
     //let eggSize = document.getElementById('eggSize');
-    let getInitialTemp = document.getElementById('exact_egg_temp').value;
-    return calculateCookTime(water_temp, egg_temp_target, getInitialTemp, r_large, alpha);
+    return calculateCookTime(water_temp, egg_temp_target, getEggTemperature(), r_large, alpha);
 }
 
 function calculateCookTime(t_b, t_c, t_0, r, alpha) {
