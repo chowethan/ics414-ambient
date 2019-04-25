@@ -27,12 +27,12 @@ function http_request(url, method, headers, body) {
 		});
 
 		request.open(method, url, true);
-		if (!headers || headers[0] !== null) {
+		if (headers === undefined) {
 			request.setRequestHeader('Cache-Control', 'no-cache');
 			request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 		}
 
-		if (headers) {
+		if (headers instanceof Array) {
 			for (let i = 0; i < headers.length; i++) {
 				if (headers[i]) {
 					request.setRequestHeader(headers[i][0], headers[i][1]);
@@ -44,8 +44,8 @@ function http_request(url, method, headers, body) {
 	});
 }
 	
-function getJSON(url) {
-	return http_request(url, 'GET', null, null).then((response, request) => {
+function getJSON(url, headers) {
+	return http_request(url, 'GET', headers, null).then((response, request) => {
 		return JSON.parse(response);
 	});
 };
@@ -87,24 +87,14 @@ function getLocationTemperature() {
 }
 
 //a latitude and longitude point will not return forecast data, just a way to get actual forecast data
-function getForecast(position) {
+async function getForecast(position) {
     console.log("lat: " + position.coords.latitude);
     console.log("long: "+ position.coords.longitude);
-//the promise method doesn't work, idk why
-    //const url = `https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`;
-    //let data = await getJSON(url);
-    //console.log(data);
-    const Http = new XMLHttpRequest();
-    const url=`https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`;
-    Http.open("GET", url);
-    Http.send();
-    Http.onreadystatechange=(e)=>{
-        let response_txt = Http.responseText;
-        response_txt = '[' + response_txt + ']';
-        let value = JSON.parse(response_txt);
-        console.log(value[0]["properties"]["forecast"]);
-        getTemperature(value[0]["properties"]["forecast"])
-    }
+    const url = `https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`;
+    let data = await getJSON(url, false);
+    console.log(data);
+    console.log(data.properties.forecast);
+    getTemperature(data.properties.forecast);
 }
 
 //feed result url from getForecast(position) to get temperature
