@@ -2,7 +2,6 @@ let altitude = 0;
 let r_medium = 0.0225;
 let r_large = 0.0233;
 let alpha = 1.53e-7;
-let mode = 1;
 
 let pressure_at_sealevel = 101325; // in pascals
 let boiling_point_at_sealevel = 373.15; //in kelvin
@@ -48,7 +47,22 @@ function getJSON(url, headers) {
 	return http_request(url, 'GET', headers, null).then((response, request) => {
 		return JSON.parse(response);
 	});
-};
+}
+
+function toggleAdvancedOptions() {
+	let optionsContainer = document.getElementById('advanced-options');
+	let toggle = document.getElementById('toggle-advanced-options');
+	
+	if (optionsContainer.dataset.visible == 1) {
+		optionsContainer.style.display = 'none';
+		optionsContainer.dataset.visible = null;
+		toggle.innerHTML = 'Show Advanced Options';
+	} else {
+		optionsContainer.style.display = '';
+		optionsContainer.dataset.visible = 1;
+		toggle.innerHTML = 'Hide Advanced Options';
+	}
+}
 
 function getLocationAltitude() {
 	let location;
@@ -113,6 +127,16 @@ function getTemperature(forecastUrl){
     }
 }
 
+function getEggTime(type) {
+	if (type == 1) {
+		return 20 * 60 * 1000;
+	} else if (type == 2) {
+		return 10 * 60 * 1000;
+	} else {
+		return 5 * 60 * 1000;
+	}
+}
+
 function getEggTimeEqn(){
     let water_temp = document.getElementById('exact_water_temp').value;
     let egg_temp_target = document.getElementById('target_egg_temp').value;
@@ -160,25 +184,4 @@ function getPressure(){
     return 101325*((1-(2.25577e-5)*altitude)**5.25588)
 }
 
-
-//determine which mode user picked
-function pickMode(mode){
-    let simple = document.getElementById("simple_container");
-    let advanced = document.getElementById("advanced_container");
-    let combined = document.getElementById("combined_container"); 
-    
-    simple.style.background= "#F7CE5B";
-    advanced.style.background= "#F7CE5B";
-    combined.style.background= "#F7CE5B";
-    
-    mode.style.background = "#f46e42";
-    
-    if(mode.id == "simple_container"){
-        mode = 1;
-    }else if(mode.id == "advanced_container"){
-        mode = 2;
-    }else{
-        mode = 3;
-    }
-    
-}
+document.getElementById('toggle-advanced-options').addEventListener('click', toggleAdvancedOptions);

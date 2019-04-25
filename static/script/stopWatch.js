@@ -12,7 +12,6 @@ function getTimeRemaining(endtime) {
 	};
 }
 
-
 function initializeClock(id, endtime) {
 	var clock = document.getElementById(id);
 	var minutesSpan = clock.querySelector('.minutes');
@@ -51,21 +50,11 @@ function startTimer() {
     if(!running){
         let eggType = parseInt(document.getElementById('eggType').value);
         //let deadline = getEggTime(eggType) + performance.now();
+		console.log(getEggTimeEqn());
         let deadline = getEggTimeEqn() + performance.now();
         initializeClock('clockdiv', deadline);
         running = true;
     }
-}
-
-
-function getEggTime(type) {
-	if (type == 1) {
-		return 20 * 60 * 1000;
-	} else if (type == 2) {
-		return 10 * 60 * 1000;
-	} else {
-		return 5 * 60 * 1000;
-	}
 }
 
 setInitialClock();

@@ -106,6 +106,7 @@ label {
 
 .menu > a .label {
 	margin: auto;
+	font-weight: 500;
 }
 
 .item {

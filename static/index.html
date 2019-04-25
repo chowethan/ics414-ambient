@@ -17,28 +17,25 @@
 		</div>
 		<div class='content'>
 			<div class='custom-container container rounded'>
-				<h3 class='text-center my-3'>Cook Your Perfect Egg</h3>
-				<img src='/image/egg.jpg' class='rounded-circle' alt='Hard boiled eggs' style='width: 300px; margin-bottom: 20px;'>
-				<br>
+				<h3 class='text-center my-3'>Cook The Perfect Egg</h3>
+				<img src='/image/egg.jpg' class='rounded-circle' alt='Hard boiled eggs' style='width: 15.63rem; margin-bottom: 1.25rem;'>
 				<br>
 				<button onClick='getLocationAltitude()'>Get Current Altitude</button>
-                <button onClick='getLocationTemperature()'>Get Current Temperature</button>  
+				<button onClick='getLocationTemperature()'>Get Current Temperature</button>
 				<br><br>
 				<div class='card bg-primary text-white  h-10'>
 					<div id='loc' class='card-body'>Not Found</div>
 				</div>
-
-				<br>
-				<div class='eggTimerInputs container rounded mb-4' onclick="pickMode(this)" id="simple_container" style="background-color: #f46e42">
-					<span><h2>Simple Options</h2></span>
-                    <span><h5>A quick and easy way to get started cooking your perfect egg.</h5></span>
+				<div class='eggTimerInputs container rounded mt-4 mb-2'>
+					<h2>Simple Options</h2>
+					<h6>A quick and easy way to get started cooking the perfect egg.</h6>
 					<div class='row'>
 						<div class='col'>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Egg Type</span>
 								</div>
-								<select class='form-control' id='eggType_simple'>
+								<select class='form-control' id='eggType'>
 									<option value=1>Hard Boiled</option>
 									<option value=2>Medium Boiled</option>
 									<option value=3>Soft Boiled</option>
@@ -48,7 +45,7 @@
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Egg Size</span>
 								</div>
-								<select class='form-control' id='eggSize_simple'>
+								<select class='form-control' id='eggSize'>
 									<option value=1>Large</option>
 									<option value=2>Medium</option>
 								</select>
@@ -63,21 +60,20 @@
 								</select>
 							</div>
 							<div class='input-group mb-2'>
-								<div class='alert alert-warning w-100 mb-0' role='alert'>The accuracy of the calculated time can be improved using your location! Your altitude affects the time it takes to boil water and cook the egg. This is entirely optional, and electing not to use it won't adversely affect your egg, unless you are at a high altitude.</div>
+								<div class='alert alert-warning w-100 mb-0' role='alert'>The accuracy of the calculated time can be vastly improved using your location! Your altitude, ambient temperature, and air pressure all affect the time it takes to boil water and cook the egg. This is entirely optional, and if you want to use this feature without providing your location (which is not stored), you may enter the information in the advanced options section.</div>
 							</div>
 							<div class='input-group mb-2'>
-								<button class='w-100'>Use Location for Altitude</button>
+								<button class='w-100'>Use Location to Improve Accuracy</button>
 							</div>
 						</div>
 					</div>
 				</div>
-				
-				<button type='button' onClick='startTimer()'>Start Timer</button>
-				<button type='button' onClick='clearTimer()'>Reset Timer</button>
-				
-				<div class='eggTimerInputs container rounded mt-4' onclick='pickMode(this)' id='advanced_container'>
-					<span><h2>Advanced Options</h2></span>
-                    <span><h5>Pick your temperatures to cook your perfect egg.</h5></span>
+				<div class='mt-2 mb-2'>
+					<a id='toggle-advanced-options' href='#' class='text-secondary'>Show Advanced Options</a>
+				</div>
+				<div id='advanced-options' class='eggTimerInputs container rounded my-2' style='display: none;'>
+					<h2>Advanced Options</h2>
+					<h6>Fine tune the knobs to cook your egg just so.</h6>
 					<div class='row'>
 						<div class='col'>
 							<div class='input-group mb-2'>
@@ -86,112 +82,12 @@
 								</div>
 								<input type='number' id='target_egg_temp' placeholder='degrees celcius (The exact temperature you desire your finished egg to be at)' class='form-control'>
 							</div>
-						</div>
-					</div>
-                    <div class='row'>
-						<div class='col'>
-							<div class='input-group mb-3'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Egg Size</span>
-								</div>
-								<select class='form-control' id='eggSize_adv'>
-									<option value=1>Large</option>
-									<option value=2>Medium</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class='row'>
-						<div class='col'>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Exact Egg temperature before boiling</span>
-								</div>
-								<input type='number' id='exact_egg_temp' placeholder='degrees celcius (ie, if it was taken from the refrigerator, the temperature of the refrigerator)' class='form-control'>
-							</div>
-						</div>
-					</div>
-					<div class='row'>
-						<div class='col'>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Exact Temperature of Water</span>
-								</div>
-								<input type='number' id='exact_water_temp' placeholder='degree celcius' class='form-control'>
-							</div>
-						</div>
-					</div>
-				</div>
-                <br>
- <!--***************   combined options box   ********************************************-->
-				<div class='eggTimerInputs container rounded' onclick='pickMode(this)' id='combined_container'>
-					<span><h2>Combined Options</h2></span>
-                    <span><h5>Know some things, but don't know them all, use a combination.</h5></span>
-				    <div class='row'>
-						<div class='col'>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Egg Type Simple</span>
-								</div>
-								<select class='form-control' id='eggType_simple'>
-									<option value=1>Hard Boiled</option>
-									<option value=2>Medium Boiled</option>
-									<option value=3>Soft Boiled</option>
-								</select>
-							</div>
-						</div>
-					</div>
-                    <div class='row'>
-						<div class='col'>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Egg Type Advanced</span>
-								</div>
-								<input type='number' id='target_egg_temp' placeholder='degrees celcius (The exact temperature you desire your finished egg to be at)' class='form-control'>
-							</div>
-						</div>
-					</div>
-                    <br>
-                    <div class='row'>
-						<div class='col'>
-							<div class='input-group mb-3'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Egg Size</span>
-								</div>
-								<select class='form-control' id='eggSize_adv'>
-									<option value=1>Large</option>
-									<option value=2>Medium</option>
-								</select>
-							</div>
-						</div>
-					</div>
-                    <br>
-					<div class='row'>
-						<div class='col'>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Approximate Egg temperature before boiling</span>
-								</div>
-								<select class='form-control' id='approx_egg_temp'>
-									<option value=1>From Refrigerator</option>
-									<option value=2>Room Temperature</option>
-								</select>
-							</div>
-						</div>
-					</div>   
-					<div class='row'>
-						<div class='col'>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Exact Egg temperature before boiling (&deg;C)</span>
 								</div>
 								<input type='number' id='exact_egg_temp' placeholder='degrees celcius (ie, if it was taken from the refrigerator, the temperature of the refrigerator)' class='form-control'>
 							</div>
-						</div>
-					</div>
-                    <br>
-					<div class='row'>
-						<div class='col'>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Exact Temperature of Water (&deg;C)</span>
@@ -201,8 +97,10 @@
 						</div>
 					</div>
 				</div>
-				<br>
-
+				<div class='my-2'>
+					<button type='button' onClick='startTimer()'>Start Timer</button>
+					<button type='button' onClick='clearTimer()'>Reset Timer</button>
+				</div>
 				<div class='card mb-4'>
 					<h2 class='card-header text-center'>Time</h2>
 					<div id='clockdiv'>
@@ -227,6 +125,5 @@
 		</div>
 		<script src='script/eggTimer.js'></script>
 		<script src='script/stopWatch.js'></script>
-
 	</body>
 </html>
