@@ -33,30 +33,30 @@
 						<div class='col'>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
-									<span class='input-group-text'>Egg Type</span>
+									<span class='input-group-text'>I want my egg</span>
 								</div>
 								<select class='form-control' id='simple_egg_temp'>
-									<option value=85>Hard Boiled</option>
-									<option value=80>Medium Boiled</option>
-									<option value=75>Soft Boiled</option>
+									<option value=85>hard boiled</option>
+									<option value=80>medium boiled</option>
+									<option value=75>soft boiled</option>
 								</select>
 							</div>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
-									<span class='input-group-text'>Egg Size</span>
+									<span class='input-group-text'>The egg is</span>
 								</div>
 								<select class='form-control' id='eggSize'>
-									<option value=0.0233>Large</option>
-									<option value=0.0228>Medium</option>
+									<option value=0.0233>large</option>
+									<option value=0.0228>medium</option>
 								</select>
 							</div>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
-									<span class='input-group-text'>Approximate Egg temperature before boiling</span>
+									<span class='input-group-text'>The egg has been sitting</span>
 								</div>
 								<select class='form-control' id='approx_egg_temp'>
-									<option value=1.6>From Refrigerator</option>
-									<option value=26.6667>Room Temperature</option>
+									<option value=1.6>in the refrigerator</option>
+									<option value=26.6667>out for a while</option>
 								</select>
 							</div>
 							<div class='input-group mb-2'>
@@ -65,11 +65,6 @@
 							<div class='input-group mb-2'>
 								<button id='location' class='w-100'>Use Location to Improve Accuracy</button>
 							</div>
-                            <div class='card bg-primary text-white  h-10'>
-					           <div id='altitude_params' class='card-body'>Click the button above to find your temperature and or alititude</div>
-                               <div id='temperature_params' class='card-body'></div> 
-				            </div>
-                            <br><br>
 						</div>
 					</div>
 				</div>
@@ -83,21 +78,21 @@
 						<div class='col'>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
-									<span class='input-group-text'>Target Egg Temperature (&deg;C)</span>
+									<span class='input-group-text'>I want my egg cooked to (&deg;C)</span>
 								</div>
-								<input type='number' id='target_egg_temp' placeholder='degrees celcius (The exact temperature you desire your finished egg to be at)' class='form-control'>
+								<input type='number' id='target_egg_temp' placeholder='The temperature you want your cooked egg to be' class='form-control'>
 							</div>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
-									<span class='input-group-text'>Exact Egg temperature before boiling (&deg;C)</span>
+									<span class='input-group-text'>Right now, my egg is (&deg;C)</span>
 								</div>
-								<input type='number' id='exact_egg_temp' placeholder='degrees celcius (ie, if it was taken from the refrigerator, the temperature of the refrigerator)' class='form-control'>
+								<input type='number' id='exact_egg_temp' placeholder='The temperature the egg is, right now (if it came from the refrigerator, the temperature of the fridge)' class='form-control'>
 							</div>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
-									<span class='input-group-text'>Exact Temperature of Water (&deg;C)</span>
+									<span class='input-group-text'>Right now, my water is (&deg;C)</span>
 								</div>
-								<input type='number' id='exact_water_temp' placeholder='degree celcius' class='form-control'>
+								<input type='number' id='exact_water_temp' placeholder='The temperature of the water, before boiling' class='form-control'>
 							</div>
 						</div>
 					</div>
