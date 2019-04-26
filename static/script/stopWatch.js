@@ -48,7 +48,7 @@ function setInitialClock() {
 
 function startTimer() {
     if(!running){
-        let eggType = parseInt(document.getElementById('eggType').value);
+        //let eggType = parseInt(document.getElementById('eggType').value);
         //let deadline = getEggTime(eggType) + performance.now();
 		console.log(getEggTimeEqn());
         let deadline = getEggTimeEqn() + performance.now();

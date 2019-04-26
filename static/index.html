@@ -35,10 +35,10 @@
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Egg Type</span>
 								</div>
-								<select class='form-control' id='eggType'>
-									<option value=1>Hard Boiled</option>
-									<option value=2>Medium Boiled</option>
-									<option value=3>Soft Boiled</option>
+								<select class='form-control' id='simple_egg_temp'>
+									<option value=85>Hard Boiled</option>
+									<option value=80>Medium Boiled</option>
+									<option value=75>Soft Boiled</option>
 								</select>
 							</div>
 							<div class='input-group mb-2'>
@@ -46,8 +46,8 @@
 									<span class='input-group-text'>Egg Size</span>
 								</div>
 								<select class='form-control' id='eggSize'>
-									<option value=1>Large</option>
-									<option value=2>Medium</option>
+									<option value=0.0233>Large</option>
+									<option value=0.0228>Medium</option>
 								</select>
 							</div>
 							<div class='input-group mb-2'>
@@ -60,11 +60,16 @@
 								</select>
 							</div>
 							<div class='input-group mb-2'>
-								<div class='alert alert-warning w-100 mb-0' role='alert'>The accuracy of the calculated time can be vastly improved using your location! Your altitude, ambient temperature, and air pressure all affect the time it takes to boil water and cook the egg. This is entirely optional, and if you want to use this feature without providing your location (which is not stored), you may enter the information in the advanced options section.</div>
+								<div class='alert alert-warning w-100 mb-0' role='alert'>The accuracy of the calculated time can be vastly improved using your location! Your air pressure affects the time it takes to boil water and cook the egg. This is entirely optional, and if you want to use this feature without providing your location (which is not stored), you may enter the information in the advanced options section.</div>
 							</div>
 							<div class='input-group mb-2'>
-								<button class='w-100'>Use Location to Improve Accuracy</button>
+								<button id='location' class='w-100'>Use Location to Improve Accuracy</button>
 							</div>
+                            <div class='card bg-primary text-white  h-10'>
+					           <div id='altitude_params' class='card-body'>Click the button above to find your temperature and or alititude</div>
+                               <div id='temperature_params' class='card-body'></div> 
+				            </div>
+                            <br><br>
 						</div>
 					</div>
 				</div>
