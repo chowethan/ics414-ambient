@@ -57,7 +57,6 @@ function getJSON(url, headers) {
 function getLocationAltitude() {
 	let location;
 	document.getElementById('loc').innerHTML = 'Currently Obtaining your altitude';
-    document.getElementById('altitude_params').innerHTML = 'Currently Obtaining your altitude';
 	if (navigator.geolocation) {
 		location = navigator.geolocation;
 		console.log(location.getCurrentPosition(getAltitude));
@@ -78,7 +77,8 @@ async function getAltitude(position) {
 		let data = await getJSON(url);
 		altitude = data.elevations[0].elevation;
 	}
-	document.getElementById('altitude_params').innerHTML = `Your altitude is: ${altitude} meters`;
+    let spinner = document.getElementById('spinner');
+    spinner.style.display = 'none';
 }
 
 //*************************** get the temperature from national weather service *************
@@ -119,8 +119,7 @@ async function getTemperature(forecastUrl){
     }
     //temperature in celcius
     air_temperature = toCelcius(temperature);
-    console.log(temperature);
-    document.getElementById('temperature_params').innerHTML = `Your temperature is: ${temperature} degrees farenheit`;
+    console.log(`air temp in celcius: ${air_temperature}`);
     return temperature;
 }
 
@@ -254,6 +253,8 @@ function toggleAdvancedOptions() {
 }
 
 function getParametersFromLocation(){
+    let spinner = document.getElementById('spinner');
+    spinner.style.display = '';
     getLocationTemperature();
     getLocationAltitude();
 }
