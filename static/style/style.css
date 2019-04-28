@@ -138,6 +138,13 @@ label {
     background-color: #F7CE5B;
 }
 
+.container.equationInputs{
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    margin-top: 2vh;
+    background-color: #db8813;
+}
+
 hr {
   border: 0;
   clear:both;
@@ -160,6 +167,9 @@ hr {
     background-color: #DFD6A7;
 }
 
+.bib {
+    text-align: left;
+}
 
 /*loading bar css found online*/
 .lds-roller {
