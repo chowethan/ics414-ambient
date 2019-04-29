@@ -29,11 +29,13 @@ function initializeClock(id, endtime) {
 	timeinterval = setInterval(updateClock, 1000);
 }
 
+
 function clearTimer() {
 	clearInterval(timeinterval);
 	setInitialClock();
     running = false;
 }
+
 
 function setInitialClock() {
 	var clock = document.getElementById('clockdiv');
@@ -43,23 +45,16 @@ function setInitialClock() {
 	secondsSpan.innerHTML = '0';
 }
 
+
 function startTimer() {
     if(!running){
-        let eggType = parseInt(document.getElementById('eggType').value);
-        let deadline = getEggTime(eggType) + performance.now();
+        //let eggType = parseInt(document.getElementById('eggType').value);
+        //let deadline = getEggTime(eggType) + performance.now();
+		console.log(getEggTimeEqn());
+        let deadline = getEggTimeEqn() + performance.now();
         initializeClock('clockdiv', deadline);
         running = true;
     }
-}
-
-function getEggTime(type) {
-	if (type == 1) {
-		return 20 * 60 * 1000;
-	} else if (type == 2) {
-		return 10 * 60 * 1000;
-	} else {
-		return 5 * 60 * 1000;
-	}
 }
 
 setInitialClock();

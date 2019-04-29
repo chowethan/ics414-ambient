@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8'>
+		<title>About</title>
+		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=yes'>
+		<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
+
+		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
+		<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous' defer>
+		<link rel='stylesheet' href='style/eggTimer.css' defer>
+		<link href='/style/style.css' rel='stylesheet' defer>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+        </script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	</head>
+	<body>
+		<div class='header'>
+			<h1>About</h1>
+		</div>
+		<div class='content'>
+			<div class='custom-container container rounded'>
+				<h3 class='text-center my-3'>Equations used to Cook The Perfect Egg</h3>
+				<img src='/image/egg.jpg' class='rounded-circle' alt='Hard boiled eggs' style='width: 15.63rem; margin-bottom: 1.25rem;'>
+				<br><br>
+                
+				<div class='eggTimerInputs container rounded mt-4 mb-2'>
+					<h2>Equations used</h2>
+					
+					<div class='row'>
+				        <div class= 'col'>
+                            <div class='equationInputs container rounded mt-4 mb-2'>
+                                <h4>Time to cook egg<sup>[1]</sup></h4>
+                                
+                                <br>
+                                $$t_E = {R^2 \over (π^2 α)} \bigg(ln⁡{(T_b-T_0) \over (T_b-T_c )} \bigg)^2$$
+                                <br>
+                                $$t_E = time \text{ } to \text{ } cook \text{ } egg \text{ } in \text{ } seconds$$
+                                $$T_b = temperature \text{ } of \text{ } boiling \text{ } water$$
+                                $$T_c = desire \text{ } Temperature \text{ } at \text{ } the \text{ } center \text{ } of \text{ } the \text{ } egg$$
+                                $$T_0 = initial \text{ } temperature \text{ } of \text{ } the \text{ } egg$$
+                                $$R = 0.0225→0.0223 \text{ } m \text{ } (radius \text{ } of \text{ } spherical \text{ } approximation \text{ } of \text{ } egg)$$
+                                $$α = 1.53*10^{-7}  m^2 s^{-1}$$
+                            </div>       
+                            <div class='equationInputs container rounded mt-4 mb-2'>
+                                <h4>Determing temperature of boiling water<sup>[2]</sup></h4>
+                                
+                                <br>
+                                $$T_2 = \bigg [{1 \over T_1} -({R ln⁡{P_2 \over P_1 } \over ∆H_{vap} })\bigg]^{-1}$$
+                                <br>
+                                $$T_2 = temperature \text{ } in \text{ } Kelvin$$
+                                $$∆H_{vap} = 40660 \text{ } Joules*mol^{-1}$$
+                                $$R = 8.314 \text{ } Joules*K^{-1}*mol^{-1}$$
+                                $$P_1 = 101325 Pascals$$
+                                $$T_1 = 373.15°K$$
+                            </div>
+
+                            In order to get $T_2$ from this equation we first need to find $P_2$  (pressure 2).
+                            <br>
+                            There are two ways to get $P_2$
+                            <br>
+                            Equation 2 is more accurate that equation 1.
+                            <br><br>
+
+                            <div class='equationInputs container rounded mt-4 mb-2'>
+                                <h3>Equation 1<sup>[3]</sup></h3>
+                                
+                                <br>    
+                                $$P_2 = 101325(1-2.25577*10^{-5}*h)^{5.25588}$$  
+                                <br>
+                                $$h=altitude \text{ } above \text{ } sea \text{ } level \text{ } (meters)$$
+
+                                $$P_2 \text{ }  is \text{ } in \text{ } Pascals$$
+                            </div>
+                            <div class='equationInputs container rounded mt-4 mb-2'>
+                                <h3>Equation 2<sup>[4]</sup></h3>
+                                <br>
+                                $$P_2 = P_0*e^{{-Mgh \over RT_{air} }}$$
+                                <br>
+                                $$P_0 = 101325 \text{ } Pascals$$
+                                $$M=0.0289644 \text{ } Kg*mol^{-1}$$
+                                $$R=8.31432 \text{ } Joules*mol^{-1}*K^{-1}$$
+                                $$h=altitidue \text{ } above \text{ } sea \text{ } level \text{ } (meters)$$
+                                $$g=9.80665 \text{ } m*s^{-2}$$
+                                $$T_{air}=air \text{ } temperature \text{ } at \text{ } altitude \text{ } h$$   
+                            </div>
+                            <div class='container rounded' style="text-align: left;">
+                                <a target="_blank" href="https://iopscience.iop.org/article/10.1088/0143-0807/27/1/013">[1]</a> Buay, D., Foong, S.K., Kiang, D., Kuppan, L., Liew, V.H.; <i>European Journal of Physics</i>, <b>2006</b>, 27, 1.
+                                https://iopscience.iop.org/article/10.1088/0143-0807/27/1/013
+                                <br>
+                                <a target="_blank" href="https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Supplemental_Modules_(Physical_and_Theoretical_Chemistry)/Physical_Properties_of_Matter/States_of_Matter/Phase_Transitions/Clausius-Clapeyron_Equation">[2]</a>https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Supplemental_Modules_<br>(Physical_and_Theoretical_Chemistry)/Physical_Properties_of_Matter/States_of_Matter/Phase_Transitions/Clausius-Clapeyron_Equation
+                                <br>
+                                <a target="_blank" href="https://www.omnicalculator.com/chemistry/boiling-point-altitude#boiling-point-elevation-equation">[3]</a>  https://www.omnicalculator.com/chemistry/boiling-point-altitude#boiling-point-elevation-equation
+                                <br>
+                                <a target="_blank" href="https://www.omnicalculator.com/physics/air-pressure-at-altitude#how-to-calculate-air-pressure-at-altitude">[4]</a> https://www.omnicalculator.com/physics/air-pressure-at-altitude#how-to-calculate-air-pressure-at-altitude
+                                <br>
+                            </div>
+                        </div>
+					</div>
+				</div>
+            </div>
+        </div>
+
+		<div class='footer'>
+			<div class='menu'>
+				<a href='/'><span class='label'>Egg Timer</span></a>
+				<a href='/settings'><span class='label'>Settings</span></a>
+                <a class='active'><span class='label'>About</span></a>
+			</div>
+		</div>
+		
+	</body>
+</html>

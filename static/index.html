@@ -1,232 +1,131 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 	<head>
+		<meta charset='UTF-8'>
+		<title>Egg Timer</title>
+		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=yes'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
-		<title>App</title>
+
 		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
 		<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous' defer>
+		<link rel='stylesheet' href='style/eggTimer.css' defer>
 		<link href='/style/style.css' rel='stylesheet' defer>
-		<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js' integrity='sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=' crossorigin='anonymous'></script>
-		<script type='module'>
-			import ListItem from '/script/component/ListItem.js';
-			
-			document.addEventListener('DOMContentLoaded', () => {
-				const socket = io();
-				let selectedDevice;
-				
-				function selectDevice(event, id) {
-					selectedDevice = id;
-					event.target.setAttribute('selected');
-				}
-				
-				function getModelName(model) {
-					switch (model) {
-						case 'ct_bulb':
-							return 'Tunable White';
-						default:
-							return 'Unknown Model';
-					}
-				}
-				
-				function addDevice(device) {
-					let deviceList = document.getElementById('devices');
-					
-					let item = new ListItem();
-					item.dataset.id = device.id;
-					item.setAttribute('text', getModelName(device.model));
-					item.setAttribute('detail', 'Connected');
-					deviceList.appendChild(item);
-				}
-				
-				socket.on('devices', (devices) => {
-					console.log(devices);
-					for (let device of devices) {
-						addDevice(device);
-					}
-				});
-				
-				socket.on('device-connect', (device) => {
-						addDevice(device);
-				});
-				
-				socket.on('device-disconnect', (device) => {
-					let deviceList = document.getElementById('devices');
-					
-					for (let i = 0; i < deviceList.children.length; i++) {
-						if (deviceList.children[i].dataset.id == device.id) {
-							deviceList.children[i].setAttribute('detail', 'Disconnected');
-						}
-					}
-				});
-				
-				function get(url) {
-					return new Promise((resolve, reject) => {
-						let request = new XMLHttpRequest();
-
-						request.addEventListener('load', (event) => {
-							resolve(request.responseText, request);
-						});
-						request.addEventListener('error', (event) => {
-							reject(event, request);
-						});
-						request.addEventListener('abort', (event) => {
-							reject(event, request);
-						});
-
-						request.open('GET', url, true);
-						request.setRequestHeader('Cache-Control', 'no-cache');
-						request.setRequestHeader('X-requested-With', 'XMLHttpRequest');
-						request.send(null);
-					});
-				}
-				
-				let toggle = document.getElementById('toggle');
-				let warm = document.getElementById('warm');
-				let cold = document.getElementById('cold');
-				let temperature = document.getElementById('temperature');
-				//cron job stuff        
-                let day = document.getElementById('day');
-                let hour = document.getElementById('hour');
-                let minute = document.getElementById('minute');
-                
-				let set_alert = document.getElementById('set_alert');
-            
-                set_alert.addEventListener('click', () => {
-                    if (checkAlert(day.value, hour.value, minute.value)) {
-                       console.log('alert set');
-					   socket.emit('set_event', {day: day.value, hour: hour.value, minute: minute.value});
-                    } else {
-                        console.log('incorrect alert values');
-                    }
-				});
-				//end of cron job stuff
-                
-				// Socket control
-				toggle.addEventListener('click', () => {
-					socket.emit('toggle');
-				});
-				warm.addEventListener('click', () => {
-					socket.emit('temperature', 1700);
-				});
-				cold.addEventListener('click', () => {
-					socket.emit('temperature', 6500);
-				});
-				temperature.addEventListener('input', () => {
-					console.log(temperature.value);
-					socket.emit('temperature', parseInt(temperature.value, 10));
-				});
-			});
-            
-            function checkAlert(day, hour, minute) {
-                    if (day == undefined) {
-                        return false;   
-                    }
-                    if (hour < 0 || hour > 23) {                    
-                        return false;
-                    }
-                    if (minute < 0 || minute > 59) {
-                        return false;
-                    }
-                    return true;
-                }
-		</script>
 	</head>
 	<body>
 		<div class='header'>
-			<h1>Home</h1>
+			<h1>Egg Timer</h1>
 		</div>
 		<div class='content'>
 			<div class='custom-container container rounded'>
-				<div class='row'>
-					<div class='col'>
-						<div class='left-home-input container'>
-
-							<h3>Connected Devices</h3>
-							<hr>
-							<ambient-list id='devices'></ambient-list>
-							<!--				<div id='devices'><ambient-item text='Device' detail='Yeelight White Tunable'></ambient-item></div>-->
+				<h3 class='text-center my-3'>Cook The Perfect Egg</h3>
+				<img src='/image/egg.jpg' class='rounded-circle' alt='Hard boiled eggs' style='width: 15.63rem; margin-bottom: 1.25rem;'>
+				<br>
+				<button onClick='getLocationAltitude()'>Get Current Altitude</button>
+				<button onClick='getLocationTemperature()'>Get Current Temperature</button>
+				<br><br>
+				<div class='card bg-primary text-white  h-10'>
+					<div id='loc' class='card-body'>Not Found</div>
+				</div>
+				<div class='eggTimerInputs container rounded mt-4 mb-2'>
+					<h2>Simple Options</h2>
+					<h6>A quick and easy way to get started cooking the perfect egg.</h6>
+					<div class='row'>
+						<div class='col'>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>I want my egg</span>
+								</div>
+								<select class='form-control' id='simple_egg_temp'>
+									<option value=85>hard boiled</option>
+									<option value=80>medium boiled</option>
+									<option value=75>soft boiled</option>
+								</select>
+							</div>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>The egg is</span>
+								</div>
+								<select class='form-control' id='eggSize'>
+									<option value=0.0233>large</option>
+									<option value=0.0228>medium</option>
+								</select>
+							</div>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>The egg has been sitting</span>
+								</div>
+								<select class='form-control' id='approx_egg_temp'>
+									<option value=1.6>in the refrigerator</option>
+									<option value=26.6667>out for a while</option>
+								</select>
+							</div>
+							<div class='input-group mb-2'>
+								<div class='alert alert-warning w-100 mb-0' role='alert'>The accuracy of the calculated time can be vastly improved using your location! Your air pressure affects the time it takes to boil water and cook the egg. This is entirely optional, and if you want to use this feature without providing your location (which is not stored), you may enter the information in the advanced options section.</div>
+							</div>
+							<div class='input-group mb-2'>
+								<button id='location' class='w-100'>Use Location to Improve Accuracy</button>
+							</div>
+                            <div class="lds-roller" style='display: none;' id='spinner'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 						</div>
 					</div>
-					<div class='headerDivider'></div>
-					<div class='col'>
-						<div class='left-home-input container'>
-							<h3>Device Control</h3>
-							<hr>
-							<div>
-								<label>On/Off</label>
-								<div>
-									<button id='toggle'>Toggle</button>
+				</div>
+				<div class='mt-2 mb-2'>
+					<a id='toggle-advanced-options' href='#' class='text-secondary'>Show Advanced Options</a>
+				</div>
+				<div id='advanced-options' class='eggTimerInputs container rounded my-2' style='display: none;'>
+					<h2>Advanced Options</h2>
+					<h6>Fine tune the knobs to cook your egg just so.</h6>
+					<div class='row'>
+						<div class='col'>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>I want my egg cooked to (&deg;C)</span>
 								</div>
+								<input type='number' id='target_egg_temp' placeholder='The temperature you want your cooked egg to be' class='form-control'>
 							</div>
-							<br>
-							<div>
-								<label>Temperature</label>
-								<div>
-									<button id='warm'>Warm</button>
-									<button id='cold'>Cold</button>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>Right now, my egg is (&deg;C)</span>
 								</div>
-								<br><br>
-
-								<div>
-									<span class='font-weight-bold indigo-text'>Cool</span>
-
-									<input id='temperature' type='range' min='1700' max='6500'>
-
-									<span class='font-weight-bold indigo-text ml-2 mt-1'>Warm</span>
-
-								</div>
+								<input type='number' id='exact_egg_temp' placeholder='The temperature the egg is, right now (if it came from the refrigerator, the temperature of the fridge)' class='form-control'>
 							</div>
-						</div>
-					</div>
-					<div class='headerDivider'></div>
-					<div class='col'>
-						<div class='left-home-input container'>
-							<h3>Add Event</h3>
-							<hr>
-							<div>
-								<label>Day of week</label>
-								<div>
-									<select id='day'>
-										<option value=1>monday</option>
-										<option value=2>tuesday</option>
-										<option value=3>wednesday</option>
-										<option value=4>thursday</option>
-										<option value=5>friday</option>
-										<option value=6>saturday</option>
-										<option value=0>sunday</option>
-									</select>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>Right now, my water is (&deg;C)</span>
 								</div>
-							</div>
-							<div>
-								<label>Hour</label>
-								<div>
-									<input type='number' id='hour' placeholder='hour 0-23'>
-								</div>
-							</div>
-							<div>
-								<label>Minute</label>
-								<div>
-									<input type='number' id='minute' placeholder='minute 0-59'>
-								</div>
-							</div>
-							<div>
-								<br>
-								<div>
-									<button id='set_alert'>Set Alert</button>
-								</div>
+								<input type='number' id='exact_water_temp' placeholder='The temperature of the boiling water' class='form-control'>
 							</div>
 						</div>
 					</div>
 				</div>
-				<br><br>
+				<div class='my-2'>
+					<button type='button' onClick='startTimer()'>Start Timer</button>
+					<button type='button' onClick='clearTimer()'>Reset Timer</button>
+				</div>
+				<div class='card mb-4'>
+					<h2 class='card-header text-center'>Time</h2>
+					<div id='clockdiv'>
+						<div>
+							<span class='minutes'></span>
+							<div class='smalltext'>Minutes</div>
+						</div>
+						<div>
+							<span class='seconds'></span>
+							<div class='smalltext'>Seconds</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<div class='footer'>
 			<div class='menu'>
-				<a class='active'><div class='label'>Home</div></a>
-				<a href='egg_timer'><span class='label'><span class='label'>Egg Timer</span></span></a>
+				<a class='active'><span class='label'>Egg Timer</span></a>
+				<a href='/settings'><span class='label'>Settings</span></a>
+                <a href='/about'><span class='label'>About</span></a>
 			</div>
 		</div>
+		<script src='script/eggTimer.js'></script>
+		<script src='script/stopWatch.js'></script>
 	</body>
 </html>
