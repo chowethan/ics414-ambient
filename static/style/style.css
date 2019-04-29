@@ -40,7 +40,7 @@ label {
 	height: 56px;
 	box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.17);
 	user-select: none;
-    background-color: var(--theme-primary-dark-color);
+    background-color: #ffee02;;
 }
 
 .header .back {
@@ -97,11 +97,13 @@ label {
 
 .menu > a:hover {
     text-decoration: none;
+		color: rgba(0, 0, 0) !important;
+ 		border-bottom: 2px solid rgba(255, 255, 255);
 }
 
 .menu > a.active {
 	--menu-item-color: var(--theme-secondary-dark-color);
-	border-bottom-color: var(--theme-secondary-color);
+	border-bottom-color: rgba(0, 0, 0) !important;
 }
 
 .menu > a .label {
@@ -149,15 +151,15 @@ hr {
   border: 0;
   clear:both;
   display:block;
-  width: 96%;               
+  width: 96%;
   background-color: black;
   height: 1px;
 }
 
 .headerDivider {
     margin-top: 1vh;
-    border-left:1px solid #38546d; 
-    border-right:1px solid #16222c; 
+    border-left:1px solid #38546d;
+    border-right:1px solid #16222c;
     height:60vh;
 
 
@@ -256,4 +258,3 @@ hr {
     transform: rotate(360deg);
   }
 }
-
