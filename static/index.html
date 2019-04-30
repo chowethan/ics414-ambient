@@ -8,7 +8,7 @@
 
 		<link href="https://fonts.googleapis.com/css?family=Merienda" rel="stylesheet">
 		<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Mono' rel='stylesheet' defer>
-		<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous' defer>
+		<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous' defer>
 		<link rel='stylesheet' href='style/eggTimer.css' defer>
 		<link href='/style/style.css' rel='stylesheet' defer>
 	</head>
@@ -20,13 +20,6 @@
 			<div class='custom-container container rounded'>
 				<h3 class='text-center my-3'>Cook The Perfect Egg</h3>
 				<img src='/image/egg.jpg' class='rounded-circle' alt='Hard boiled eggs' style='width: 15.63rem; margin-bottom: 1.25rem;'>
-				<br>
-				<button onClick='getLocationAltitude()'>Get Current Altitude</button>
-				<button onClick='getLocationTemperature()'>Get Current Temperature</button>
-				<br><br>
-				<div class='card bg-primary text-white  h-10'>
-					<div id='loc' class='card-body'>Not Found</div>
-				</div>
 				<div class='eggTimerInputs container rounded mt-4 mb-2'>
 					<h2>Simple Options</h2>
 					<h6>A quick and easy way to get started cooking the perfect egg.</h6>
@@ -46,9 +39,10 @@
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>The egg is</span>
 								</div>
-								<select class='form-control' id='eggSize'>
+								<select class='form-control' id='simple_eggSize'>
 									<option value=0.0233>large</option>
 									<option value=0.0228>medium</option>
+									<option value=0.0225>small</option>
 								</select>
 							</div>
 							<div class='input-group mb-2'>
@@ -86,6 +80,12 @@
 							</div>
 							<div class='input-group mb-2'>
 								<div class='input-group-prepend'>
+									<span class='input-group-text'>The size of my egg is (cm)</span>
+								</div>
+								<input type='number' id='exact_eggSize' placeholder='The diameter of the egg' class='form-control'>
+							</div>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
 									<span class='input-group-text'>Right now, my egg is (&deg;C)</span>
 								</div>
 								<input type='number' id='exact_egg_temp' placeholder='The temperature the egg is, right now (if it came from the refrigerator, the temperature of the fridge)' class='form-control'>
@@ -94,7 +94,19 @@
 								<div class='input-group-prepend'>
 									<span class='input-group-text'>Right now, my water is (&deg;C)</span>
 								</div>
-								<input type='number' id='exact_water_temp' placeholder='The temperature of the boiling water' class='form-control'>
+								<input type='number' id='exact_water_temp' placeholder='The temperature of the boiling water; must be greater than the target egg temperature' class='form-control'>
+							</div>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>My altitude is (m)</span>
+								</div>
+								<input type='number' id='altitude' placeholder='Your current altitude' class='form-control'>
+							</div>
+							<div class='input-group mb-2'>
+								<div class='input-group-prepend'>
+									<span class='input-group-text'>The air pressure here is (Pa)</span>
+								</div>
+								<input type='number' id='air_pressure' placeholder='Your air pressure' class='form-control'>
 							</div>
 						</div>
 					</div>
@@ -112,7 +124,7 @@
 						</div>
 						<div style='background-color: #F7CE5B;'>
 							<span style='color: #000000; background-color: #F7CE5B;'> : </span>
-							<div class='smalltext'>&</div>
+							<div class='smalltext'>&amp;</div>
 						</div>
 						<div style='background-color: #F7CE5B;'>
 							<span class='seconds' style='color: #000000; background-color: #F7CE5B;'></span>

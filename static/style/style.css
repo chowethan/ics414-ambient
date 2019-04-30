@@ -97,13 +97,13 @@ label {
 
 .menu > a:hover {
     text-decoration: none;
-		color: rgba(0, 0, 0) !important;
- 		border-bottom: 2px solid rgba(255, 255, 255);
+	color: #000 !important;
+	border-bottom: 3px solid #FFF;
 }
 
 .menu > a.active {
 	--menu-item-color: var(--theme-secondary-dark-color);
-	border-bottom-color: rgba(0, 0, 0) !important;
+	border-bottom-color: #000 !important;
 }
 
 .menu > a .label {

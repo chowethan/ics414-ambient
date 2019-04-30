@@ -47,11 +47,9 @@ function setInitialClock() {
 
 
 function startTimer() {
-    if(!running){
-        //let eggType = parseInt(document.getElementById('eggType').value);
-        //let deadline = getEggTime(eggType) + performance.now();
-		console.log(getEggTimeEqn());
-        let deadline = getEggTimeEqn() + performance.now();
+    if (!running) {
+		console.log(calculateCookTime());
+        let deadline = calculateCookTime() + performance.now();
         initializeClock('clockdiv', deadline);
         running = true;
     }

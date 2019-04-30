@@ -1,20 +1,18 @@
-let altitude = 0;
-let r_medium = 0.0225;
-let r_large = 0.0233;
-let alpha = 1.53e-7;
+const altitude = 0;
+const r_medium = 0.0225;
+const r_large = 0.0233;
+const alpha = 1.53e-7;
 
-let kelvin = 273.15;
+const kelvin = 273.15;
 
-let pressure_at_sealevel = 101325; // in pascals
-let boiling_point_at_sealevel = 373.15; //in kelvin
-let temp_err = -1000;
-let currentPressure = 0;
+const pressure_at_sealevel = 101325; // in pascals
+const boiling_point_at_sealevel = 373.15; //in kelvin
 
-let air_temperature = -1000;
-let heat_of_vaporization = 40660;
-let blocking = false;
+const heat_of_vaporization = 40660;
 
-//*************************** HTTP GET functions  *******************************
+/******************
+ * HTTP FUNCTIONS *
+ ******************/
 function http_request(url, method, headers, body) {
 	return new Promise((resolve, reject) => {
 		let request = new XMLHttpRequest();
@@ -53,211 +51,219 @@ function getJSON(url, headers) {
 	});
 }
 
-//*************************** get the altitude  *******************************
-function getLocationAltitude() {
-	let location;
-	document.getElementById('loc').innerHTML = 'Currently Obtaining your altitude';
+/********************************
+ * LOCATION-DEPENDANT FUNCTIONS *
+ ********************************/
+function getPosition() {
 	if (navigator.geolocation) {
-		location = navigator.geolocation;
-		console.log(location.getCurrentPosition(getAltitude));
-  
-	} else { 
-		console.log('position not found');
- 
+		return new Promise((resolve, reject) => {
+			navigator.geolocation.getCurrentPosition(resolve, reject);
+		});
+	} else {
+		console.log('Geolocation API not supported!');
+		return Promise.reject(new Error('Geolocation API not supported!'));
 	}
 }
 
+// Gets the altitude, using either the provided Geolocation data, or an external API if unavailable
 async function getAltitude(position) {
-	altitude = position.coords.altitude;
-	// document.getElementById('loc').innerHTML = altitude + ' meters';
-	const url = `https://elevation-api.io/api/elevation?points=(${position.coords.latitude},${position.coords.longitude})`;
+	let altitude = position.coords.altitude;
 	
 	// Only use external API to obtain altitude if Geolocation API implementation does not provide it
 	if (altitude === null) {
-		let data = await getJSON(url);
+		console.log('No altitude provided by geolocation, using fallback API');
+		let data = await getJSON(`https://elevation-api.io/api/elevation?points=(${position.coords.latitude},${position.coords.longitude})`);
 		altitude = data.elevations[0].elevation;
 	}
-    let spinner = document.getElementById('spinner');
-    spinner.style.display = 'none';
-}
-
-//*************************** get the temperature from national weather service *************
-function getLocationTemperature() {
-  
-	let location;
-    document.getElementById('loc').innerHTML = 'Currently Obtaining your temperature';
-	if (navigator.geolocation) {
-		location = navigator.geolocation;
-		location.getCurrentPosition(getForecast);
-  
-	} else { 
-		console.log('position not found');
-   
-	}
-}
-
-//a latitude and longitude point will not return forecast data, just a way to get actual forecast data
-async function getForecast(position) {
-    console.log("lat: " + position.coords.latitude);
-    console.log("long: "+ position.coords.longitude);
-    const url = `https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`;
-    let data = await getJSON(url, false);
-    console.log(data);
-    console.log(data.properties.forecast);
-    return getTemperature(data.properties.forecast);
-}
-
-//feed result url from getForecast(position) to get temperature
-    //this also has an altitude interestingly
-async function getTemperature(forecastUrl){
-    const Http = new XMLHttpRequest();
-    const url=forecastUrl;
-    let data = await getJSON(forecastUrl, false);
-    temperature = data["properties"]["periods"][0]["temperature"];
-    if(temperature === null){
-        air_temperature = -1000;
-    }
-    //temperature in celcius
-    air_temperature = toCelcius(temperature);
-    console.log(`air temp in celcius: ${air_temperature}`);
-    return temperature;
-}
-
-function toCelcius(temperature){
-    return ((temperature - 32) * (5/9));
-}
-
-//****************** get parameters for determing how long to cook egg *********************
-function getEggTemperature() {
-	let simpleEggTemperature = document.getElementById('approx_egg_temp');
-	let advancedEggTemperature = document.getElementById('exact_egg_temp');
 	
-	if (advancedEggTemperature.value.trim().length > 0) {
-		if (parseFloat(advancedEggTemperature.value)) {
-			return parseFloat(advancedEggTemperature.value);
-		}
-	}
-	return parseFloat(simpleEggTemperature.value);
+	console.log(`Altitude: ${altitude}`);
+	return altitude;
 }
 
-function getEggTargetTemperature() {
-	let simpleTarget = document.getElementById('simple_egg_temp');
-	let advancedTarget = document.getElementById('exact_egg_temp');
+// Gets the temperature from the National Weather Service
+async function getTemperature(position) {
+	let weatherData = await getJSON(`https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`, false);
+	console.log(weatherData);
+	let forecastURL = weatherData.properties.forecast;
+	let forecastData = await getJSON(forecastURL, false);
+	let temperature = forecastData['properties']['periods'][0]['temperature'];
 	
-	if (advancedTarget.value.trim().length > 0) {
-		if (parseFloat(advancedEggTemperature.value)) {
-			return parseFloat(advancedEggTemperature.value);
-		}
+	if (temperature === null) {
+		return null;
 	}
-	return parseFloat(simpleTarget.value);
+	// Convert Fahrenheit to elcius
+	temperature = (temperature - 32) * (5/9);
+	
+	console.log(`Air temperature (°C): ${temperature}`);
+	return temperature;
 }
 
-function getWaterTemperature(){
-    let water_temp = document.getElementById('exact_water_temp');
-    if (water_temp.value.trim().length > 0) {
-		if (parseFloat(advancedEggTemperature.value)) {
-			return parseFloat(advancedEggTemperature.value);
-		} 
+function getPressure(altitude, temperature) {
+	if (temperature === null) {
+		// Less precise way to calculate pressure, using only altitude
+		return 101325 * ((1 - (2.25577e-5) * altitude) ** 5.25588);
+	} else {
+		// More precise way to calculate barometric pressure, using altitude and temperature
+		let m = 0.0289644;
+		let r_gas_const = 8.31432;
+		let g = 9.80665;
+		
+		// Convert Celcius to Kelvin
+		temperature = temperature + kelvin;
+		let exp_value = (-m * g * altitude) / (r_gas_const * (temperature));
+		return 101325 * Math.exp(exp_value);
 	}
-    let pressure = 0;
-    if(air_temperature === -1000){
-        pressure = getPressure();
-    }else{
-        console.log('barometer');
-        pressure = getBarometricPressure();
-    }
-    console.log("pressure is: " + pressure);
-    return getBoilingTempOfWater(pressure);  
 }
 
-function setAltitude(){
-    if(altitude == -1 || altitude === null){
-        altitude = getLocationAltitude();
-    }
+/*****************************
+ * INPUT RETRIEVAL FUNCTIONS *
+ *****************************/
+function getInitialEggTemperatureInput() {
+	let simpleValue = document.getElementById('approx_egg_temp').value;
+	let advancedValue = document.getElementById('exact_egg_temp').value;
+	
+	if (!isNaN(parseFloat(advancedValue))) {
+		return parseFloat(advancedValue);
+	}
+	
+	return parseFloat(simpleValue);
 }
 
-function setAirTemperature(){
-    if(air_temperature === -1000){
-        air_temperature = getLocationTemperature();   
-    }
+function getTargetEggTemperatureInput() {
+	let simpleValue = document.getElementById('simple_egg_temp').value;
+	let advancedValue = document.getElementById('exact_egg_temp').value;
+	
+	if (!isNaN(parseFloat(advancedValue))) {
+		return parseFloat(advancedValue);
+	}
+	
+	return parseFloat(simpleValue);
 }
 
-function blockForResponse(){
-    while(blocking){
-    }
+function getEggSizeInput() {
+	let simpleValue = document.getElementById('simple_eggSize').value;
+	let advancedValue = document.getElementById('exact_eggSize').value;
+	
+	if (!isNaN(parseFloat(advancedValue))) {
+		return parseFloat(advancedValue) / 2;
+	}
+	
+	return parseFloat(simpleValue);
 }
 
-//***************************  equations *************************************************
-//this first function isnt really an equation more of a helper function
-function getEggTimeEqn(){
-    let water_temp = getWaterTemperature();
-    let targetEggTemp = getEggTargetTemperature();
-    let currentEggTemp = getEggTemperature();
-    let egg_size = document.getElementById('eggSize').value;
-    console.log(water_temp + " " + targetEggTemp + " " + currentEggTemp + " " + egg_size);
-    
-    return calculateCookTime(water_temp, targetEggTemp, currentEggTemp, egg_size, alpha);
+function getWaterTemperatureInput() {
+	let water_temp = document.getElementById('exact_water_temp').value;
+	
+	if (!isNaN(parseFloat(water_temp))) {
+		return parseFloat(water_temp);
+	}
+	
+	return 100;  
 }
 
-function calculateCookTime(t_b, t_c, t_0, r, alpha) {
-//t_b is temperature of the water
-//t_c is desired egg temperature
-//t_0 is initial egg temperature
-//r is radius of sphere used to approximate egg shape in meters
-//alpha is a parameter determined to be 1.53e-7
-    //the equation is split into two parts so its easier (hopefully to understand)
+// UNUSED
+async function getAltitudeInput(position) {
+	let advancedValue = document.getElementById('altitude').value;
+	
+	if (!isNaN(parseFloat(advancedValue))) {
+		return parseFloat(advancedValue);
+	}
+	
+	return await getAltitude(position);  
+}
+
+// UNUSED
+function getAirPressureInput() {
+	let advancedValue = document.getElementById('air_pressure').value;
+	
+	if (!isNaN(parseFloat(advancedValue))) {
+		return parseFloat(advancedValue);
+	}
+	
+	return 100;  
+}
+
+/*************
+ * EQUATIONS *
+ *************/
+function calculateCookTime() {
+	let t_b = getWaterTemperatureInput();
+	let t_c = getTargetEggTemperatureInput();
+	let t_0 = getInitialEggTemperatureInput();
+	let r = getEggSizeInput();
+	
+	//t_b is temperature of the water
+	//t_c is desired egg temperature
+	//t_0 is initial egg temperature
+	//r is radius of sphere used to approximate egg shape in meters
+	//alpha is a parameter determined to be 1.53e-7
+	
+	//the equation is split into two parts so its easier (hopefully to understand)
 	let e1 = (r ** 2) / ((Math.PI ** 2) * alpha);
 	let e2 = (Math.log((t_b - t_0) / (t_b - t_c))) ** 2;
 	//time is in seconds, so it needs ot be converted into milliseconds for the timer
 	let time = e1 * e2 * 1000;
-    return time;
+	
+	return time;
 }
 
 // use the claudius clapyron equation to get temperature water boils at at different altitude
-function getBoilingTempOfWater(currentPressure){
-    let r_gas_const = 8.31432;
-    let e1 = 1/boiling_point_at_sealevel;
-    let e2 = (r_gas_const * Math.log(currentPressure/pressure_at_sealevel))/heat_of_vaporization;
-    boiling_temp = 1/(e1-e2);
-    //returns temperature water boils at in celcius
-    return (boiling_temp-kelvin); 
+function getBoilingTempOfWater(pressure){
+	let r_gas_const = 8.31432;
+	let e1 = 1 / boiling_point_at_sealevel;
+	let e2 = (r_gas_const * Math.log(pressure / pressure_at_sealevel)) / heat_of_vaporization;
+	boiling_temp = 1 / (e1 - e2);
+	//returns temperature water boils at in celcius
+	return boiling_temp - kelvin; 
 }
 
-//more precise way to get pressure, uses temperature and altitude
-function getBarometricPressure(){
-    let m = 0.0289644;
-    let r_gas_const = 8.31432;
-    let g = 9.80665;
-    let exp_value = (-m*g*altitude)/(r_gas_const*(air_temperature+kelvin));
-    return 101325*Math.exp(exp_value);
-}
-
-//less precise way to get pressure
-function getPressure(){
-    return 101325*((1-(2.25577e-5)*altitude)**5.25588)
-}
-
-function toggleAdvancedOptions() {
+/*************
+ * UTILITIES *
+ *************/
+function toggleAdvancedOptions(show) {
 	let optionsContainer = document.getElementById('advanced-options');
 	let toggle = document.getElementById('toggle-advanced-options');
 	
-	if (optionsContainer.dataset.visible == 1) {
+	if (show === undefined) {
+		show = optionsContainer.dataset.visible == 1 ? false : true;
+	}
+	
+	if (show === false) {
 		optionsContainer.style.display = 'none';
 		optionsContainer.dataset.visible = null;
 		toggle.innerHTML = 'Show Advanced Options';
-	} else {
+	} else if (show === true) {
 		optionsContainer.style.display = '';
 		optionsContainer.dataset.visible = 1;
 		toggle.innerHTML = 'Hide Advanced Options';
 	}
 }
 
-function getParametersFromLocation(){
-    let spinner = document.getElementById('spinner');
-    spinner.style.display = '';
-    getLocationTemperature();
-    getLocationAltitude();
+async function getParametersFromLocation() {
+	let spinner = document.getElementById('spinner');
+	spinner.style.display = '';
+	
+	toggleAdvancedOptions(true);
+		
+	try {
+		let position = await getPosition();
+		let altitude = await getAltitude(position);
+		let airTemperature = await getTemperature(position);
+		let pressure = getPressure(altitude, airTemperature);
+		let waterTemperature = getBoilingTempOfWater(pressure);
+		
+		document.getElementById('altitude').value = altitude;
+		document.getElementById('air_pressure').value = pressure;
+		document.getElementById('exact_water_temp').value = waterTemperature;
+	} catch (error) {
+		console.log('Failed to obtain location.');
+		console.log(error);
+	}
+	
+	spinner.style.display = 'none';
 }
 
-document.getElementById('toggle-advanced-options').addEventListener('click', toggleAdvancedOptions);
+document.getElementById('toggle-advanced-options').addEventListener('click', () => {
+	toggleAdvancedOptions();
+});
 document.getElementById('location').addEventListener('click', getParametersFromLocation);
