@@ -11,6 +11,8 @@
 		<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous' defer>
 		<link rel='stylesheet' href='style/eggTimer.css' defer>
 		<link href='/style/style.css' rel='stylesheet' defer>
+		
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js' integrity='sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=' crossorigin='anonymous'></script>
 	</head>
 	<body>
 		<div class='header'>
@@ -20,93 +22,101 @@
 			<div class='custom-container container rounded'>
 				<h3 class='text-center my-3'>Cook The Perfect Egg</h3>
 				<img src='/image/egg.jpg' class='rounded-circle' alt='Hard boiled eggs' style='width: 15.63rem; margin-bottom: 1.25rem;'>
-				<div class='eggTimerInputs container rounded mt-4 mb-2'>
-					<h2>Simple Options</h2>
-					<h6>A quick and easy way to get started cooking the perfect egg.</h6>
-					<div class='row'>
-						<div class='col'>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>I want my egg</span>
+				<div class='card egg mt-4 mb-2'>
+					<div class='card-header'>
+						<h2>Simple Options</h2>
+						<h6>A quick and easy way to get started cooking the perfect egg.</h6>
+					</div>
+					<div class='container'>
+						<div class='row'>
+							<div class='col'>
+								<div class='input-group mb-2'>
+									<div class='input-group-prepend'>
+										<span class='input-group-text'>I want my egg</span>
+									</div>
+									<select class='form-control' id='simple_egg_temp'>
+										<option value=85>hard boiled</option>
+										<option value=80>medium boiled</option>
+										<option value=75>soft boiled</option>
+									</select>
 								</div>
-								<select class='form-control' id='simple_egg_temp'>
-									<option value=85>hard boiled</option>
-									<option value=80>medium boiled</option>
-									<option value=75>soft boiled</option>
-								</select>
-							</div>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>The egg is</span>
+								<div class='input-group mb-2'>
+									<div class='input-group-prepend'>
+										<span class='input-group-text'>The egg is</span>
+									</div>
+									<select class='form-control' id='simple_egg_size'>
+										<option value=0.0233>large</option>
+										<option value=0.0228>medium</option>
+										<option value=0.0225>small</option>
+									</select>
 								</div>
-								<select class='form-control' id='simple_egg_size'>
-									<option value=0.0233>large</option>
-									<option value=0.0228>medium</option>
-									<option value=0.0225>small</option>
-								</select>
-							</div>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>The egg has been sitting</span>
+								<div class='input-group mb-2'>
+									<div class='input-group-prepend'>
+										<span class='input-group-text'>The egg has been sitting</span>
+									</div>
+									<select class='form-control' id='approx_egg_temp'>
+										<option value=1.6>in the refrigerator</option>
+										<option value=26.6667>out for a while</option>
+									</select>
 								</div>
-								<select class='form-control' id='approx_egg_temp'>
-									<option value=1.6>in the refrigerator</option>
-									<option value=26.6667>out for a while</option>
-								</select>
+								<div class='input-group mb-2'>
+									<div class='alert alert-warning w-100 mb-0' role='alert'>The accuracy of the calculated time can be vastly improved using your location! Your air pressure affects the time it takes to boil water and cook the egg. This is entirely optional, and if you want to use this feature without providing your location (which is not stored), you may enter the information in the advanced options section.</div>
+								</div>
+								<div class='input-group mb-2'>
+									<button id='location' class='w-100'>Use Location to Improve Accuracy</button>
+								</div>
+								<div class="lds-roller" style='display: none;' id='spinner'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 							</div>
-							<div class='input-group mb-2'>
-								<div class='alert alert-warning w-100 mb-0' role='alert'>The accuracy of the calculated time can be vastly improved using your location! Your air pressure affects the time it takes to boil water and cook the egg. This is entirely optional, and if you want to use this feature without providing your location (which is not stored), you may enter the information in the advanced options section.</div>
-							</div>
-							<div class='input-group mb-2'>
-								<button id='location' class='w-100'>Use Location to Improve Accuracy</button>
-							</div>
-                            <div class="lds-roller" style='display: none;' id='spinner'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 						</div>
 					</div>
 				</div>
 				<div class='mt-2 mb-2'>
 					<a id='toggle-advanced-options' href='#' class='text-secondary'>Show Advanced Options</a>
 				</div>
-				<div id='advanced-options' class='eggTimerInputs container rounded my-2' style='display: none;'>
-					<h2>Advanced Options</h2>
-					<h6>Fine tune the knobs to cook your egg just so.</h6>
-					<div class='row'>
-						<div class='col'>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>I want my egg cooked to (&deg;C)</span>
+				<div id='advanced-options' class='card egg my-2' style='display: none;'>
+					<div class='card-header'>
+						<h2>Advanced Options</h2>
+						<h6>Fine tune the knobs to cook your egg just so.</h6>
+					</div>
+					<div class='container'>
+						<div class='row'>
+							<div class='col'>
+								<div class='input-group mb-2'>
+									<div class='input-group-prepend'>
+										<span class='input-group-text'>I want my egg cooked to (&deg;C)</span>
+									</div>
+									<input type='number' id='target_egg_temp' placeholder='The temperature you want your cooked egg to be' class='form-control'>
 								</div>
-								<input type='number' id='target_egg_temp' placeholder='The temperature you want your cooked egg to be' class='form-control'>
-							</div>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>The size of my egg is (cm)</span>
+								<div class='input-group mb-2'>
+									<div class='input-group-prepend'>
+										<span class='input-group-text'>The size of my egg is (cm)</span>
+									</div>
+									<input type='number' id='exact_egg_size' placeholder='The diameter of the egg' class='form-control'>
 								</div>
-								<input type='number' id='exact_egg_size' placeholder='The diameter of the egg' class='form-control'>
-							</div>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Right now, my egg is (&deg;C)</span>
+								<div class='input-group mb-2'>
+									<div class='input-group-prepend'>
+										<span class='input-group-text'>Right now, my egg is (&deg;C)</span>
+									</div>
+									<input type='number' id='exact_egg_temp' placeholder='The temperature the egg is, right now (if it came from the refrigerator, the temperature of the fridge)' class='form-control'>
 								</div>
-								<input type='number' id='exact_egg_temp' placeholder='The temperature the egg is, right now (if it came from the refrigerator, the temperature of the fridge)' class='form-control'>
-							</div>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>Right now, my water is (&deg;C)</span>
+								<div class='input-group mb-2'>
+									<div class='input-group-prepend'>
+										<span class='input-group-text'>Right now, my water is (&deg;C)</span>
+									</div>
+									<input type='number' id='exact_water_temp' placeholder='The temperature of the boiling water; must be greater than the target egg temperature' class='form-control'>
 								</div>
-								<input type='number' id='exact_water_temp' placeholder='The temperature of the boiling water; must be greater than the target egg temperature' class='form-control'>
-							</div>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>My altitude is (m)</span>
+								<div class='input-group mb-2'>
+									<div class='input-group-prepend'>
+										<span class='input-group-text'>My altitude is (m)</span>
+									</div>
+									<input type='number' id='altitude' placeholder='Your current altitude' class='form-control'>
 								</div>
-								<input type='number' id='altitude' placeholder='Your current altitude' class='form-control'>
-							</div>
-							<div class='input-group mb-2'>
-								<div class='input-group-prepend'>
-									<span class='input-group-text'>The air pressure here is (Pa)</span>
+								<div class='input-group mb-2'>
+									<div class='input-group-prepend'>
+										<span class='input-group-text'>The air pressure here is (Pa)</span>
+									</div>
+									<input type='number' id='air_pressure' placeholder='Your air pressure' class='form-control'>
 								</div>
-								<input type='number' id='air_pressure' placeholder='Your air pressure' class='form-control'>
 							</div>
 						</div>
 					</div>
@@ -115,19 +125,19 @@
 					<button type='button' onClick='startTimer()'>Start Timer</button>
 					<button type='button' onClick='clearTimer()'>Reset Timer</button>
 				</div>
-				<div class='card mb-4' style='background-color: #F7CE5B;'>
-					<h2 class='card-header text-center'>Time</h2>
+				<div class='card egg mb-4'>
+					<h2 class='card-header text-center' style='margin-bottom: 0;'>Time</h2>
 					<div id='clockdiv'>
-						<div style='background-color: #F7CE5B;'>
-							<span class='minutes' style='color: #000000; background-color: #F7CE5B;'></span>
+						<div>
+							<span class='minutes'></span>
 							<div class='smalltext'>Minutes</div>
 						</div>
-						<div style='background-color: #F7CE5B;'>
-							<span style='color: #000000; background-color: #F7CE5B;'> : </span>
+						<div style='padding: 0; background: none;'>
+							<span style='padding-left: 0; padding-right: 0; background: none; color: #000;'>:</span>
 							<div class='smalltext'>&amp;</div>
 						</div>
-						<div style='background-color: #F7CE5B;'>
-							<span class='seconds' style='color: #000000; background-color: #F7CE5B;'></span>
+						<div>
+							<span class='seconds'></span>
 							<div class='smalltext'>Seconds</div>
 						</div>
 					</div>
