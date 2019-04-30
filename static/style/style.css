@@ -40,7 +40,7 @@ label {
 	height: 56px;
 	box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.17);
 	user-select: none;
-    background-color: #ffee02;;
+    background-color: var(--theme-primary-color);
 }
 
 .header .back {
