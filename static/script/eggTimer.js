@@ -141,8 +141,8 @@ function getTargetEggTemperatureInput() {
 }
 
 function getEggSizeInput() {
-	let simpleValue = document.getElementById('simple_eggSize').value;
-	let advancedValue = document.getElementById('exact_eggSize').value;
+	let simpleValue = document.getElementById('simple_egg_size').value;
+	let advancedValue = document.getElementById('exact_egg_size').value;
 	
 	if (!isNaN(parseFloat(advancedValue))) {
 		return parseFloat(advancedValue) / 2;
