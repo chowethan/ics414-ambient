@@ -197,10 +197,10 @@ function calculateCookTime() {
 	//t_0 is initial egg temperature
 	//r is radius of sphere used to approximate egg shape in meters
 	//alpha is a parameter determined to be 1.53e-7
-	
+	//console.log(t_b + " " + t_c + " " + t_0 + " " + r);
 	//the equation is split into two parts so its easier (hopefully to understand)
 	let e1 = (r ** 2) / ((Math.PI ** 2) * alpha);
-	let e2 = (Math.log((t_b - t_0) / (t_b - t_c))) ** 2;
+	let e2 = (Math.log(0.76 *(t_b - t_0) / (t_b - t_c)));
 	//time is in seconds, so it needs ot be converted into milliseconds for the timer
 	let time = e1 * e2 * 1000;
 	
