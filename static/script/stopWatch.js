@@ -1,4 +1,5 @@
-let timeInterval;
+const socket = io();
+let timeInterval, flashInterval;
 let running = false;
 
 function getTimeRemaining(endtime) {
@@ -22,6 +23,18 @@ function initializeClock(id, endtime) {
 		minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
 		secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 		if (t.total <= 0) {
+			let temp = 6500;
+			
+			flashInterval = setInterval(() => {
+				if (temp == 6500) {
+					temp = 2700;
+				} else {
+					temp = 6500;
+				}
+				
+				socket.emit('temperature', temp, 1000);
+			}, 1000);
+			
 			clearTimer();
 		}
 	}
@@ -29,13 +42,15 @@ function initializeClock(id, endtime) {
 	timeinterval = setInterval(updateClock, 1000);
 }
 
-
 function clearTimer() {
 	clearInterval(timeinterval);
+	if (flashInterval) {
+		clearInterval(flashInterval);
+		socket.emit('temperature', 4200);
+	}
 	setInitialClock();
     running = false;
 }
-
 
 function setInitialClock() {
 	var clock = document.getElementById('clockdiv');
@@ -44,7 +59,6 @@ function setInitialClock() {
 	minutesSpan.innerHTML = '0';
 	secondsSpan.innerHTML = '0';
 }
-
 
 function startTimer() {
     if (!running) {

@@ -71,7 +71,6 @@ socketio.on('connection', (socket) => {
 			(async () => {
 				try {
 					await deviceQueue.queue(yeelight, 'toggle');
-//					await yeelight.toggle();
 				} catch (error) {
 					console.log(error);
 				}
@@ -79,12 +78,13 @@ socketio.on('connection', (socket) => {
 		}
 	});
 	
-	socket.on('temperature', (value) => {
+	socket.on('temperature', (value, duration) => {
+		duration = duration === undefined ? 250 : duration;
+		
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
 				try {
-					await deviceQueue.queue(yeelight, 'setCtAbx', [value, 'smooth', 250]);
-//					await yeelight.setCtAbx(value, 'sudden');
+					await deviceQueue.queue(yeelight, 'setCtAbx', [value, 'smooth', duration]);
 				} catch (error) {
 					console.log(error);
 				}
@@ -92,12 +92,13 @@ socketio.on('connection', (socket) => {
 		}
 	});
 	
-	socket.on('brightness', (value) => {
+	socket.on('brightness', (value, duration) => {
+		duration = duration === undefined ? 250 : duration;
+		
 		for (let [, {device: yeelight}] of devices) {
 			(async () => {
 				try {
-					await deviceQueue.queue(yeelight, 'setBright', [value, 'smooth', 250]);
-//					await yeelight.setBright(value, 'sudden');
+					await deviceQueue.queue(yeelight, 'setBright', [value, 'smooth', duration]);
 				} catch (error) {
 					console.log(error);
 				}
